@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comptes COD:M - K-SHOP</title>
+    <meta name="description" content="Achetez des comptes Call of Duty Mobile premium avec armes légendaires et personnages mythiques">
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="https://files.catbox.moe/0fr884.jpeg">
+    <link rel="apple-touch-icon" href="https://files.catbox.moe/0fr884.jpeg">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://files.catbox.moe/0fr884.jpeg">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://files.catbox.moe/0fr884.jpeg">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .accounts-filter {
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .filter-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .account-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 20px;
+            padding: 25px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .account-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--neon-green), var(--neon-purple), var(--neon-blue));
+            animation: scanline 3s linear infinite;
+        }
+
+        .account-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0, 255, 136, 0.2);
+        }
+
+        .account-header {
+            display: flex;
+            justify-content: between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .account-uid {
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--neon-green);
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            font-family: monospace;
+        }
+
+        .account-level {
+            background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
+            color: var(--dark-bg);
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .account-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border: 2px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .account-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--neon-green);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        .vehicles-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .vehicle-tag {
+            background: rgba(0, 204, 255, 0.1);
+            color: var(--neon-blue);
+            padding: 4px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            border: 1px solid rgba(0, 204, 255, 0.3);
+        }
+
+        .account-price {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .price-amount {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--neon-green);
+            margin-bottom: 5px;
+        }
+
+        .price-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .negotiable-badge {
+            background: rgba(255, 170, 0, 0.2);
+            color: var(--neon-orange);
+            padding: 4px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            border: 1px solid var(--neon-orange);
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .negative-cp-warning {
+            background: rgba(255, 68, 68, 0.2);
+            color: var(--neon-red);
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+            border: 1px solid var(--neon-red);
+        }
+
+        .accounts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .no-accounts {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+
+        .view-details-btn {
+            width: 100%;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .account-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .feature-tag {
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--neon-green);
+            padding: 4px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .accounts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .sort-options {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .sort-label {
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="cyber-grid"></div>
+
+    <!-- Notifications -->
+    <div class="notification-container" id="notificationContainer"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="accueil.html" class="logo">
+                <img src="https://files.catbox.moe/phtnrr.jpeg" alt="K-SHOP Logo" class="logo-image">
+                <div class="logo-text">K-SHOP</div>
+            </a>
+
+            <nav class="nav-controls">
+                <a href="accueil.html" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    Accueil
+                </a>
+                <a href="comptes.html" class="nav-link" style="background: rgba(0, 255, 136, 0.1);">
+                    <i class="fas fa-users"></i>
+                    Comptes
+                </a>
+                <a href="faq.html" class="nav-link">
+                    <i class="fas fa-question-circle"></i>
+                    FAQ
+                </a>
+                
+                <div id="authLinks" style="display: flex; gap: 10px;">
+                    <a href="signin.html" class="nav-link">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Connexion
+                    </a>
+                    <a href="signup.html" class="cyber-btn">
+                        <i class="fas fa-user-plus"></i>
+                        Inscription
+                    </a>
+                </div>
+
+                <div id="userLinks" style="display: none; align-items: center; gap: 15px;">
+                    <a href="user.html" class="nav-link">
+                        <i class="fas fa-user"></i>
+                        Mon Compte
+                    </a>
+                    <a href="historique.html" class="nav-link">
+                        <i class="fas fa-history"></i>
+                        Historique
+                    </a>
+                    <button onclick="logout()" class="nav-link" style="background: none; border: none;">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Déconnexion
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="page-header">
+            <h1 class="page-title">Comptes COD:M Premium</h1>
+            <p class="page-subtitle">
+                Découvrez notre sélection exclusive de comptes Call of Duty Mobile avec armes légendaires, 
+                personnages mythiques et équipements rares. Tous les comptes sont vérifiés et sécurisés.
+            </p>
+        </div>
+
+        <!-- Filtres -->
+        <div class="accounts-filter">
+            <h3 style="color: var(--neon-green); margin-bottom: 20px;">
+                <i class="fas fa-filter"></i>
+                Filtres et Recherche
+            </h3>
+            
+            <div class="filter-grid">
+                <div class="form-group">
+                    <label class="form-label">Niveau minimum</label>
+                    <input type="number" class="form-input" id="minLevel" min="1" max="400" placeholder="1">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Prix maximum</label>
+                    <input type="number" class="form-input" id="maxPrice" min="0" placeholder="50000">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Personnages mythiques</label>
+                    <input type="number" class="form-input" id="minMythicChars" min="0" placeholder="0">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Armes légendaires</label>
+                    <input type="number" class="form-input" id="minLegendaryWeapons" min="0" placeholder="0">
+                </div>
+            </div>
+
+            <div class="sort-options">
+                <span class="sort-label">Trier par :</span>
+                <select class="form-select" id="sortBy" style="width: auto;">
+                    <option value="newest">Plus récents</option>
+                    <option value="price_low">Prix (croissant)</option>
+                    <option value="price_high">Prix (décroissant)</option>
+                    <option value="level">Niveau</option>
+                    <option value="mythic">Personnages mythiques</option>
+                </select>
+            </div>
+
+            <div class="filter-actions">
+                <button class="cyber-btn" onclick="applyFilters()">
+                    <i class="fas fa-search"></i>
+                    Appliquer les filtres
+                </button>
+                <button class="action-btn btn-edit" onclick="resetFilters()">
+                    <i class="fas fa-redo"></i>
+                    Réinitialiser
+                </button>
+            </div>
+        </div>
+
+        <!-- Grille des comptes -->
+        <div class="accounts-grid" id="accountsGrid">
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <p>Chargement des comptes...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p class="footer-text">
+                &copy; 2025 K-SHOP. Tous droits réservés.<br>
+                Développé par Kerm
+            </p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+    
+    <script>
+        let allAccounts = [];
+        let filteredAccounts = [];
+
+        // Données d'exemple (à remplacer par l'API)
+        const sampleAccounts = [
+            {
+                _id: "1",
+                uid: "6748372881926354829",
+                level: 150,
+                mythicCharacters: 3,
+                legendaryCharacters: 12,
+                mythicWeapons: 2,
+                legendaryWeapons: 8,
+                legendaryVehicles: {
+                    snowboard: true,
+                    helicopter: true,
+                    allTerrain: false,
+                    antelope: true,
+                    allVehicles: false
+                },
+                negativeCP: {
+                    hasNegativeCP: false,
+                    amount: ""
+                },
+                negotiable: true,
+                image: "https://files.catbox.moe/2wwjbw.jpeg",
+                sellerContact: "WhatsApp: +237656520674",
+                price: 45000,
+                isAvailable: true,
+                createdAt: "2024-01-15T10:30:00.000Z"
+            },
+            {
+                _id: "2", 
+                uid: "6748372881926354830",
+                level: 280,
+                mythicCharacters: 8,
+                legendaryCharacters: 25,
+                mythicWeapons: 5,
+                legendaryWeapons: 18,
+                legendaryVehicles: {
+                    snowboard: true,
+                    helicopter: true,
+                    allTerrain: true,
+                    antelope: true,
+                    allVehicles: true
+                },
+                negativeCP: {
+                    hasNegativeCP: true,
+                    amount: "-1500 CP"
+                },
+                negotiable: false,
+                image: "https://files.catbox.moe/otscfo.jpeg",
+                sellerContact: "Telegram: @kshop_support",
+                price: 120000,
+                isAvailable: true,
+                createdAt: "2024-01-10T14:20:00.000Z"
+            }
+        ];
+
+        // Charger les comptes
+        async function loadAccounts() {
+            try {
+                // Simuler le chargement depuis l'API
+                const response = await fetch(`${API_BASE_URL}/accounts`);
+                if (response.ok) {
+                    allAccounts = await response.json();
+                } else {
+                    // Fallback sur les données d'exemple
+                    allAccounts = sampleAccounts;
+                }
+                
+                filteredAccounts = [...allAccounts];
+                displayAccounts();
+                
+            } catch (error) {
+                console.error('Erreur chargement comptes:', error);
+                // Utiliser les données d'exemple en cas d'erreur
+                allAccounts = sampleAccounts;
+                filteredAccounts = [...allAccounts];
+                displayAccounts();
+                notificationSystem.show('Utilisation des données de démonstration', 'info');
+            }
+        }
+
+        // Afficher les comptes
+        function displayAccounts() {
+            const grid = document.getElementById('accountsGrid');
+            
+            if (filteredAccounts.length === 0) {
+                grid.innerHTML = `
+                    <div class="no-accounts">
+                        <i class="fas fa-search" style="font-size: 3rem; color: var(--text-secondary); margin-bottom: 20px;"></i>
+                        <h3 style="color: var(--text-secondary); margin-bottom: 10px;">Aucun compte trouvé</h3>
+                        <p style="color: var(--text-secondary);">Aucun compte ne correspond à vos critères de recherche.</p>
+                        <button class="cyber-btn" onclick="resetFilters()" style="margin-top: 20px;">
+                            <i class="fas fa-redo"></i>
+                            Voir tous les comptes
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = filteredAccounts.map(account => `
+                <div class="account-card">
+                    <div class="account-header">
+                        <div class="account-uid">UID: ${account.uid}</div>
+                        <div class="account-level">Niv. ${account.level}</div>
+                    </div>
+
+                    <img src="${account.image}" alt="Compte COD:M" class="account-image" 
+                         onerror="this.src='https://files.catbox.moe/phtnrr.jpeg'">
+
+                    <div class="account-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">${account.mythicCharacters}</div>
+                            <div class="stat-label">Mythic</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${account.legendaryCharacters}</div>
+                            <div class="stat-label">Légendaire</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${account.mythicWeapons}</div>
+                            <div class="stat-label">Arme Mythic</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${account.legendaryWeapons}</div>
+                            <div class="stat-label">Arme Leg.</div>
+                        </div>
+                    </div>
+
+                    <div class="account-features">
+                        ${account.mythicCharacters > 0 ? '<span class="feature-tag">Perso Mythic</span>' : ''}
+                        ${account.mythicWeapons > 0 ? '<span class="feature-tag">Arme Mythic</span>' : ''}
+                        ${account.legendaryWeapons > 5 ? '<span class="feature-tag">+5 Armes Leg.</span>' : ''}
+                        ${account.level > 200 ? '<span class="feature-tag">Niveau Élevé</span>' : ''}
+                    </div>
+
+                    ${getVehiclesHTML(account.legendaryVehicles)}
+
+                    ${account.negativeCP.hasNegativeCP ? `
+                        <div class="negative-cp-warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            CP Négatif: ${account.negativeCP.amount}
+                        </div>
+                    ` : ''}
+
+                    ${account.negotiable ? `
+                        <div class="negotiable-badge">
+                            <i class="fas fa-handshake"></i>
+                            Prix négociable
+                        </div>
+                    ` : ''}
+
+                    <div class="account-price">
+                        <div class="price-amount">${account.price.toLocaleString()} XAF</div>
+                        <div class="price-label">Prix fixe</div>
+                    </div>
+
+                    <button class="cyber-btn view-details-btn" onclick="viewAccountDetails('${account._id}')">
+                        <i class="fas fa-eye"></i>
+                        Voir les détails
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // Générer le HTML pour les véhicules
+        function getVehiclesHTML(vehicles) {
+            const activeVehicles = Object.entries(vehicles)
+                .filter(([key, value]) => value && key !== 'allVehicles')
+                .map(([key]) => key);
+
+            if (activeVehicles.length === 0) return '';
+
+            return `
+                <div class="vehicles-list">
+                    ${activeVehicles.map(vehicle => `
+                        <span class="vehicle-tag">
+                            <i class="fas fa-car"></i>
+                            ${vehicle.charAt(0).toUpperCase() + vehicle.slice(1)}
+                        </span>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // Appliquer les filtres
+        function applyFilters() {
+            const minLevel = parseInt(document.getElementById('minLevel').value) || 1;
+            const maxPrice = parseInt(document.getElementById('maxPrice').value) || Infinity;
+            const minMythicChars = parseInt(document.getElementById('minMythicChars').value) || 0;
+            const minLegendaryWeapons = parseInt(document.getElementById('minLegendaryWeapons').value) || 0;
+            const sortBy = document.getElementById('sortBy').value;
+
+            filteredAccounts = allAccounts.filter(account => 
+                account.level >= minLevel &&
+                account.price <= maxPrice &&
+                account.mythicCharacters >= minMythicChars &&
+                account.legendaryWeapons >= minLegendaryWeapons &&
+                account.isAvailable
+            );
+
+            // Trier les comptes
+            switch(sortBy) {
+                case 'price_low':
+                    filteredAccounts.sort((a, b) => a.price - b.price);
+                    break;
+                case 'price_high':
+                    filteredAccounts.sort((a, b) => b.price - a.price);
+                    break;
+                case 'level':
+                    filteredAccounts.sort((a, b) => b.level - a.level);
+                    break;
+                case 'mythic':
+                    filteredAccounts.sort((a, b) => b.mythicCharacters - a.mythicCharacters);
+                    break;
+                case 'newest':
+                default:
+                    filteredAccounts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                    break;
+            }
+
+            displayAccounts();
+        }
+
+        // Réinitialiser les filtres
+        function resetFilters() {
+            document.getElementById('minLevel').value = '';
+            document.getElementById('maxPrice').value = '';
+            document.getElementById('minMythicChars').value = '';
+            document.getElementById('minLegendaryWeapons').value = '';
+            document.getElementById('sortBy').value = 'newest';
+            
+            filteredAccounts = [...allAccounts];
+            displayAccounts();
+        }
+
+        // Voir les détails d'un compte
+        function viewAccountDetails(accountId) {
+            if (!currentUser) {
+                notificationSystem.show('Veuillez vous connecter pour voir les détails', 'error');
+                setTimeout(() => window.location.href = 'signin.html', 1000);
+                return;
+            }
+
+            const account = allAccounts.find(acc => acc._id === accountId);
+            if (account) {
+                // Stocker le compte pour la page de détails
+                localStorage.setItem('selectedAccount', JSON.stringify(account));
+                // Rediriger vers une page de détails (à créer)
+                notificationSystem.show('Redirection vers les détails du compte', 'info');
+                // window.location.href = `account-details.html?id=${accountId}`;
+            }
+        }
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', () => {
+            loadAccounts();
+        });
+    </script>
+</body>
+</html>

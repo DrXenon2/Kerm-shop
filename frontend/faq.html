@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - K-SHOP | Questions Fréquentes</title>
+    <meta name="description" content="Trouvez des réponses à toutes vos questions sur l'achat de CP COD:M et comptes premium">
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="https://files.catbox.moe/0fr884.jpeg">
+    <link rel="apple-touch-icon" href="https://files.catbox.moe/0fr884.jpeg">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://files.catbox.moe/0fr884.jpeg">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://files.catbox.moe/0fr884.jpeg">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .faq-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .faq-categories {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .category-btn {
+            padding: 15px 25px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .category-btn:hover {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: rgba(0, 255, 136, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .category-btn.active {
+            background: linear-gradient(135deg, var(--neon-green), var(--neon-blue));
+            color: var(--dark-bg);
+            border-color: transparent;
+        }
+
+        .faq-search {
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .search-container {
+            position: relative;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--neon-green);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+        }
+
+        .faq-section {
+            margin-bottom: 50px;
+            display: none;
+        }
+
+        .faq-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--neon-green);
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .faq-item {
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 15px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            border-color: var(--neon-green);
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.1);
+        }
+
+        .faq-question {
+            padding: 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        .faq-icon {
+            color: var(--neon-green);
+            transition: transform 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            padding: 0 25px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .faq-item.active .faq-answer {
+            padding: 0 25px 25px 25px;
+            max-height: 1000px;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 50px;
+        }
+
+        .action-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.2);
+            border-color: var(--neon-green);
+        }
+
+        .action-icon {
+            font-size: 2.5rem;
+            color: var(--neon-green);
+            margin-bottom: 15px;
+        }
+
+        .action-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--neon-green);
+        }
+
+        .action-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+            display: none;
+        }
+
+        .no-results-icon {
+            font-size: 4rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .emergency-contact {
+            background: linear-gradient(135deg, var(--card-bg), #1a1a2e);
+            border: 1px solid rgba(255, 68, 68, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .emergency-title {
+            color: var(--neon-red);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .emergency-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .emergency-btn {
+            padding: 12px 25px;
+            background: rgba(255, 68, 68, 0.2);
+            border: 1px solid var(--neon-red);
+            border-radius: 10px;
+            color: var(--neon-red);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .emergency-btn:hover {
+            background: var(--neon-red);
+            color: var(--dark-bg);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .faq-categories {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .category-btn {
+                justify-content: center;
+            }
+            
+            .emergency-buttons {
+                flex-direction: column;
+            }
+            
+            .faq-question {
+                padding: 20px;
+                font-size: 1rem;
+            }
+        }
+
+        .highlight {
+            background: rgba(0, 255, 136, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--neon-green);
+            font-weight: 600;
+        }
+
+        .warning-note {
+            background: rgba(255, 170, 0, 0.1);
+            border: 1px solid var(--neon-orange);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            color: var(--neon-orange);
+            font-size: 0.9rem;
+        }
+
+        .success-note {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--neon-green);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            color: var(--neon-green);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="cyber-grid"></div>
+
+    <!-- Notifications -->
+    <div class="notification-container" id="notificationContainer"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="accueil.html" class="logo">
+                <img src="https://files.catbox.moe/phtnrr.jpeg" alt="K-SHOP Logo" class="logo-image">
+                <div class="logo-text">K-SHOP</div>
+            </a>
+
+            <nav class="nav-controls">
+                <a href="accueil.html" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    Accueil
+                </a>
+                <a href="comptes.html" class="nav-link">
+                    <i class="fas fa-users"></i>
+                    Comptes
+                </a>
+                <a href="faq.html" class="nav-link" style="background: rgba(0, 255, 136, 0.1);">
+                    <i class="fas fa-question-circle"></i>
+                    FAQ
+                </a>
+                <a href="support.html" class="nav-link">
+                    <i class="fas fa-headset"></i>
+                    Support
+                </a>
+                
+                <div id="authLinks" style="display: flex; gap: 10px;">
+                    <a href="signin.html" class="nav-link">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Connexion
+                    </a>
+                    <a href="signup.html" class="cyber-btn">
+                        <i class="fas fa-user-plus"></i>
+                        Inscription
+                    </a>
+                </div>
+
+                <div id="userLinks" style="display: none; align-items: center; gap: 15px;">
+                    <a href="user.html" class="nav-link">
+                        <i class="fas fa-user"></i>
+                        Mon Compte
+                    </a>
+                    <a href="historique.html" class="nav-link">
+                        <i class="fas fa-history"></i>
+                        Historique
+                    </a>
+                    <button onclick="logout()" class="nav-link" style="background: none; border: none;">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Déconnexion
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="faq-container">
+            <div class="page-header">
+                <h1 class="page-title">FAQ - Questions Fréquentes</h1>
+                <p class="page-subtitle">
+                    Trouvez rapidement des réponses à toutes vos questions sur l'achat de CP COD:M, 
+                    les comptes premium et nos services.
+                </p>
+            </div>
+
+            <!-- Barre de recherche -->
+            <div class="faq-search">
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" class="search-input" id="faqSearch" placeholder="Rechercher dans la FAQ...">
+                </div>
+            </div>
+
+            <!-- Catégories -->
+            <div class="faq-categories">
+                <button class="category-btn active" data-category="general">
+                    <i class="fas fa-info-circle"></i>
+                    Général
+                </button>
+                <button class="category-btn" data-category="cp">
+                    <i class="fas fa-coins"></i>
+                    Achat CP
+                </button>
+                <button class="category-btn" data-category="accounts">
+                    <i class="fas fa-users"></i>
+                    Comptes
+                </button>
+                <button class="category-btn" data-category="payment">
+                    <i class="fas fa-credit-card"></i>
+                    Paiement
+                </button>
+                <button class="category-btn" data-category="security">
+                    <i class="fas fa-shield-alt"></i>
+                    Sécurité
+                </button>
+                <button class="category-btn" data-category="technical">
+                    <i class="fas fa-cogs"></i>
+                    Technique
+                </button>
+            </div>
+
+            <!-- Aucun résultat -->
+            <div class="no-results" id="noResults">
+                <div class="no-results-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h3 style="color: var(--text-secondary); margin-bottom: 10px;">Aucun résultat trouvé</h3>
+                <p style="color: var(--text-secondary);">
+                    Aucune question ne correspond à votre recherche. Essayez d'autres mots-clés.
+                </p>
+            </div>
+
+            <!-- FAQ Générale -->
+            <div class="faq-section active" id="generalSection">
+                <h2 class="section-title">
+                    <i class="fas fa-info-circle"></i>
+                    Questions Générales
+                </h2>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Qu'est-ce que K-SHOP ?
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p><span class="highlight">K-SHOP</span> est une plateforme spécialisée dans la vente de <span class="highlight">CP (Call of Duty Points)</span> pour Call of Duty Mobile et de <span class="highlight">comptes premium COD:M</span>.</p>
+                        <p>Nous offrons un service rapide, sécurisé et fiable avec support 24h/24 et 7j/7.</p>
+                        <div class="success-note">
+                            <i class="fas fa-check-circle"></i>
+                            <strong>Notre mission :</strong> Vous fournir les meilleurs produits COD:M au meilleur prix.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Est-ce que K-SHOP est légal et sécurisé ?
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p><strong>Oui, absolument !</strong> K-SHOP opère dans le respect des conditions d'utilisation de Call of Duty Mobile.</p>
+                        <p>Nous utilisons des méthodes légitimes pour fournir les CP et comptes :</p>
+                        <ul style="margin: 15px 0; padding-left: 20px;">
+                            <li>Paiements sécurisés via MTN MoMo et Orange Money</li>
+                            <li>Protection des données personnelles</li>
+                            <li>Processus de vente transparent</li>
+                            <li>Support client réactif</li>
+                        </ul>
+                        <div class="success-note">
+                            <i class="fas fa-shield-alt"></i>
+                            <strong>Sécurité garantie :</strong> Aucun risque de ban, processus 100% sécurisé.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Quels sont les pays desservis par K-SHOP ?
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>K-SHOP dessert principalement les pays suivants :</p>
+                        <ul style="margin: 15px 0; padding-left: 20px;">
+                            <li><strong>Cameroun</strong> (MTN MoMo, Orange Money)</li>
+                            <li><strong>Côte d'Ivoire</strong> (Orange Money, MTN MoMo)</li>
+                            <li><strong>Sénégal</strong> (Orange Money, Free Money)</li>
+                            <li><strong>Autres pays d'Afrique francophone</strong></li>
+                        </ul>
+                        <p>Si votre pays n'est pas listé, contactez notre support pour vérifier la disponibilité.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Comment contacter le support K-SHOP ?
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Plusieurs moyens pour nous contacter :</p>
+                        <ul style="margin: 15px 0; padding-left: 20px;">
+                            <li><strong>WhatsApp :</strong> +237 656 520 674</li>
+                            <li><strong>Telegram :</strong> @kshop_support</li>
+                            <li><strong>Email :</strong> support@kshop.com</li>
+                            <li><strong>Page Support :</strong> <a href="support.html" style="color: var(--neon-green);">support.html</a></li>
+                        </ul>
+                        <div class="success-note">
+                            <i class="fas fa-clock"></i>
+                            <strong>Disponibilité :</strong> Support 24h/24 et 7j/7
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Achat CP -->
+            <div class="faq-section" id="cpSection">
+                <h2 class="section-title">
+                    <i class="fas fa-coins"></i>
+                    Achat de CP COD:M
+                </h2>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Combien de temps pour recevoir mes CP après paiement ?
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p><strong>Livraison instantanée !</strong> Dans la majorité des cas, vous recevez vos CP dans les <span class="highlight">2 à 5 minutes</span> après confirmation du paiement.</p>
+                        <p>Délais selon le statut de la commande :</p>
+                        <ul style="margin: 15px 0; padding-left: 20px;">
+                            <li><strong>Immédiat :</strong> 80% des commandes</li>
+                            <li><strong>5-15 minutes :</strong> 15% des commandes (vérifications)</li>
+                            <li><strong>15-30 minutes :</strong> 5% des commandes (problèmes techniques)</li>
+                        </ul>
+                        <div class="warning-note">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Si vous n'avez pas reçu vos CP après 30 minutes, contactez immédiatement le support.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Que faire si je n'ai pas reçu mes CP ?
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Si vous n'avez pas reçu vos CP après 30 minutes :</p>
+                        <ol style="margin: 15px 0; padding-left: 20px;">
+                            <li><strong>Vérifiez votre Player ID</strong> dans les paramètres du jeu</li>
+                            <li><strong>Contactez le support</strong> avec votre numéro de commande</li>
+                            <li><strong>Fournissez la preuve de paiement</strong></li>
+                            <li><strong>Patientez pendant que nous résolvons le problème</strong></li>
+                        </ol>
+                        <p><strong>Garantie remboursement :</strong> Si nous ne pouvons pas livrer les CP, vous êtes intégralement remboursé.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Puis-je me faire bannir en achetant des CP sur K-SHOP ?
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p><strong>Non, absolument pas !</strong> Nos méthodes sont 100% légitimes et sécurisées.</p>
+                        <p>Nous utilisons des processus approuvés qui respectent les conditions d'utilisation d'Activision :</p>
+                        <ul style="margin: 15px 0; padding-left: 20px;">
+                            <li>Aucune modification de fichiers jeu</li>
+                            <li>Aucun hack ou cheat</li>
+                            <li>Processus de gift officiel</li>
+                            <li>Respect des limites de sécurité</li>
+                        </ul>
+                        <div class="success-note">
+                            <i class="fas fa-check-shield"></i>
+                            <strong>Zéro risque de ban :</strong> Plus de 10,000 commandes traitées sans aucun bannissement.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Y a-t-il une limite d'achat de CP ?
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Oui, pour des raisons de sécurité :</p>
+                        <ul style="margin: 15px 0; padding-left: 20px;">
+                            <li><strong>Limite par commande :</strong> 20,000 CP</li>
+                            <li><strong>Limite quotidienne :</strong> 50,000 CP par joueur</li>
+                            <li><strong>Limite mensuelle :</strong> 200,000 CP par joueur</li>
+                        </ul>
+                        <p>Ces limites peuvent être ajustées pour les clients réguliers après vérification.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Comptes -->
+            <div class="faq-section" id="accountsSection">
+                <h2 class="section-title">
+                    <i class="fas fa-users"></i>
+                    Comptes COD:M Premium
+                </h2>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Les comptes vendus sont-ils légitimes ?
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p><strong>Oui, tous nos comptes sont 100% légitimes !</strong></p>
+                        <p>Chaque compte est vérifié et testé avant la vente :</p>
+                        <ul style="margin: 15px 0; padding-left: 20px;">
+                            <li>Comptes créés légalement</li>
+                            <li>Aucun hack ou modification illégale</li>
+                            <li>Informations complètes fournies</li>
+                            <li>Garantie de fonctionnement</li>
+                        </ul>
+                        <div class="success-note">
+                            <i class="fas fa-user-check"></i>
+                            <strong>Transparence totale :</strong> Toutes les caractéristiques du compte sont affichées.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Que se passe-t-il après l'achat d'un compte ?
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Processus après achat :</p>
+                        <ol style="margin: 15px 0; padding-left: 20px;">
+                            <li><strong>Confirmation de paiement</strong> (2-5 minutes)</li>
+                            <li><strong>Réception des identifiants</strong> par email/WhatsApp</li>
+                            <li><strong>Connexion et vérification</strong> du compte</li>
+                            <li><strong>Changement des informations</strong> (email, mot de passe)</li>
+                            <li><strong>Support 7 jours</strong> après l'achat</li>
+                        </ol>
+                        <div class="warning-note">
+                            <i class="fas fa-key"></i>
+                            <strong>Important :</strong> Changez immédiatement l'email et le mot de passe après réception.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Puis-je récupérer un compte si je perds l'accès ?
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p><strong>Non, une fois le compte livré, il est sous votre entière responsabilité.</strong></p>
+                        <p>Pour éviter tout problème :</p>
+                        <ul style="margin: 15px 0; padding-left: 20px;">
+                            <li>Changez immédiatement email et mot de passe</li>
+                            <li>Activez l'authentification à deux facteurs</li>
+                            <li>Sauvegardez les informations de sécurité</li>
+                            <li>Ne partagez jamais vos identifiants</li>
+                        </ul>
+                        <p>Nous fournissons un support de 7 jours pour tout problème technique de livraison.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Paiement -->
+            <div class="faq-section" id="paymentSection">
+                <h2 class="section-title">
+                    <i class="fas fa-credit-card"></i>
+                    Paiements et Facturation
+                </h2>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Quels moyens de paiement acceptez-vous ?
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Nous acceptons les moyens de paiement suivants :</p>
+                        <ul style="margin: 15px 0; padding-left: 20px;">
+                            <li><strong>MTN MoMo Cameroun</strong></li>
+                            <li><strong>Orange Money Cameroun</strong></li>
+                            <li><strong>Orange Money Côte d'Ivoire</strong></li>
+                            <li><strong>MTN MoMo Côte d'Ivoire</strong></li>
+                            <li><strong>Cryptomonnaies</strong> (Bitcoin, USDT) - Sur demande</li>
+                        </ul>
+                        <p>D'autres moyens de paiement peuvent être ajoutés selon la demande.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Comment fonctionne le processus de paiement ?
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Processus simplifié en 4 étapes :</p>
+                        <ol style="margin: 15px 0; padding-left: 20px;">
+                            <li><strong>Sélection du produit</strong> (CP ou compte)</li>
+                            <li><strong>Remplissage du formulaire</strong> (Player ID, informations)</li>
+                            <li><strong>Paiement</strong> via le moyen choisi</li>
+                            <li><strong>Confirmation automatique</strong> et livraison</li>
+                        </ol>
+                        <div class="success-note">
+                            <i class="fas fa-bolt"></i>
+                            <strong>Rapidité :</strong> Processus entièrement automatisé pour une livraison ultra-rapide.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Proposez-vous des remboursements ?
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p><strong>Oui, sous certaines conditions :</strong></p>
+                        <ul style="margin: 15px 0; padding-left: 20px;">
+                            <li><strong>Remboursement intégral</strong> si nous ne pouvons pas livrer le produit</li>
+                            <li><strong>Remboursement partiel</strong> en cas de retard significatif</li>
+                            <li><strong>Aucun remboursement</strong> après livraison réussie</li>
+                            <li><strong>Aucun remboursement</strong> pour erreur du client (mauvais Player ID)</li>
+                        </ul>
+                        <p>Les demandes de remboursement sont traitées sous 24-48 heures.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Sécurité -->
+            <div class="faq-section" id="securitySection">
+                <h2 class="section-title">
+                    <i class="fas fa-shield-alt"></i>
+                    Sécurité et Confidentialité
+                </h2>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Mes données personnelles sont-elles protégées ?
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p><strong>Absolument !</strong> La protection de vos données est notre priorité.</p>
+                        <p>Mesures de sécurité implémentées :</p>
+                        <ul style="margin: 15px 0; padding-left: 20px;">
+                            <li>Chiffrement SSL 256-bit</li>
+                            <li>Base de données sécurisée</li>
+                            <li>Aucun partage de données avec des tiers</li>
+                            <li>Suppression des données sensibles après traitement</li>
+                            <li>Conformité RGPD</li>
+                        </ul>
+                        <div class="success-note">
+                            <i class="fas fa-lock"></i>
+                            <strong>Confidentialité garantie :</strong> Vos informations ne quittent jamais nos serveurs sécurisés.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Comment signaler un problème de sécurité ?
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Si vous suspectez un problème de sécurité :</p>
+                        <ol style="margin: 15px 0; padding-left: 20px;">
+                            <li><strong>Contactez immédiatement</strong> le support sécurité</li>
+                            <li><strong>Ne partagez pas</strong> vos identifiants</li>
+                            <li><strong>Changez votre mot de passe</strong> si nécessaire</li>
+                            <li><strong>Signalez toute activité suspecte</strong></li>
+                        </ol>
+                        <p><strong>Email sécurité :</strong> security@kshop.com</p>
+                        <div class="warning-note">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <strong>Urgence :</strong> En cas de problème critique, contactez-nous par WhatsApp.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Technique -->
+            <div class="faq-section" id="technicalSection">
+                <h2 class="section-title">
+                    <i class="fas fa-cogs"></i>
+                    Support Technique
+                </h2>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Le site ne fonctionne pas, que faire ?
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Si vous rencontrez des problèmes techniques :</p>
+                        <ol style="margin: 15px 0; padding-left: 20px;">
+                            <li><strong>Videz le cache</strong> de votre navigateur</li>
+                            <li><strong>Essayez un autre navigateur</strong> (Chrome, Firefox)</li>
+                            <li><strong>Désactivez les extensions</strong> (AdBlock, etc.)</li>
+                            <li><strong>Vérifiez votre connexion internet</strong></li>
+                            <li><strong>Contactez le support technique</strong></li>
+                        </ol>
+                        <p>Problèmes courants et solutions :</p>
+                        <ul style="margin: 15px 0; padding-left: 20px;">
+                            <li><strong>Page blanche :</strong> Vider le cache</li>
+                            <li><strong>Boutons inactifs :</strong> Désactiver AdBlock</li>
+                            <li><strong>Chargement lent :</strong> Vérifier la connexion</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Je n'arrive pas à me connecter à mon compte
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Problèmes de connexion et solutions :</p>
+                        <ul style="margin: 15px 0; padding-left: 20px;">
+                            <li><strong>Mot de passe oublié :</strong> Utilisez "Mot de passe oublié"</li>
+                            <li><strong>Email non vérifié :</strong> Vérifiez votre boîte email</li>
+                            <li><strong>Compte bloqué :</strong> Contactez le support</li>
+                            <li><strong>Problème technique :</strong> Essayez plus tard</li>
+                        </ul>
+                        <p><a href="resetpassword.html" style="color: var(--neon-green); font-weight: 600;">Cliquez ici pour réinitialiser votre mot de passe</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact d'urgence -->
+            <div class="emergency-contact">
+                <div class="emergency-title">
+                    <i class="fas fa-life-ring"></i>
+                    Support Urgent
+                </div>
+                <p style="color: var(--text-secondary); margin-bottom: 20px;">
+                    Vous n'avez pas trouvé de réponse à votre question ? Contactez notre support directement.
+                </p>
+                <div class="emergency-buttons">
+                    <a href="https://wa.me/+237656520674" class="emergency-btn" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                        WhatsApp Urgent
+                    </a>
+                    <a href="support.html" class="emergency-btn">
+                        <i class="fas fa-headset"></i>
+                        Page Support
+                    </a>
+                    <a href="mailto:support@kshop.com" class="emergency-btn">
+                        <i class="fas fa-envelope"></i>
+                        Email Support
+                    </a>
+                </div>
+            </div>
+
+            <!-- Actions rapides -->
+            <div class="quick-actions">
+                <a href="accueil.html" class="action-card">
+                    <div class="action-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="action-title">Acheter des CP</div>
+                    <div class="action-description">
+                        Achetez rapidement des CP COD:M avec livraison instantanée
+                    </div>
+                </a>
+                
+                <a href="comptes.html" class="action-card">
+                    <div class="action-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="action-title">Comptes Premium</div>
+                    <div class="action-description">
+                        Découvrez notre sélection de comptes COD:M avec armes légendaires
+                    </div>
+                </a>
+                
+                <a href="support.html" class="action-card">
+                    <div class="action-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <div class="action-title">Support Direct</div>
+                    <div class="action-description">
+                        Contactez notre équipe de support pour toute assistance
+                    </div>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p class="footer-text">
+                &copy; 2025 K-SHOP. Tous droits réservés.<br>
+                Développé par Kerm
+            </p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+    
+    <script>
+        // Données FAQ complètes
+        const faqData = {
+            general: [
+                {
+                    question: "Qu'est-ce que K-SHOP ?",
+                    answer: "K-SHOP est une plateforme spécialisée dans la vente de CP (Call of Duty Points) pour Call of Duty Mobile et de comptes premium COD:M. Nous offrons un service rapide, sécurisé et fiable avec support 24h/24 et 7j/7."
+                },
+                {
+                    question: "Est-ce que K-SHOP est légal et sécurisé ?",
+                    answer: "Oui, absolument ! K-SHOP opère dans le respect des conditions d'utilisation de Call of Duty Mobile. Nous utilisons des méthodes légitimes et sécurisées pour toutes nos transactions."
+                }
+                // ... autres questions (les données sont déjà dans le HTML)
+            ],
+            cp: [
+                {
+                    question: "Combien de temps pour recevoir mes CP après paiement ?",
+                    answer: "Livraison instantanée ! Dans la majorité des cas, vous recevez vos CP dans les 2 à 5 minutes après confirmation du paiement."
+                }
+                // ... autres questions
+            ],
+            // ... autres catégories
+        };
+
+        // Navigation par catégories
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Désactiver tous les boutons
+                document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.faq-section').forEach(s => s.classList.remove('active'));
+                
+                // Activer le bouton cliqué
+                btn.classList.add('active');
+                const category = btn.dataset.category;
+                document.getElementById(`${category}Section`).classList.add('active');
+                
+                // Réinitialiser la recherche
+                document.getElementById('faqSearch').value = '';
+                resetSearch();
+            });
+        });
+
+        // Système de recherche
+        document.getElementById('faqSearch').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase().trim();
+            
+            if (searchTerm.length < 2) {
+                resetSearch();
+                return;
+            }
+
+            let foundResults = false;
+
+            // Rechercher dans toutes les sections
+            document.querySelectorAll('.faq-section').forEach(section => {
+                let sectionHasResults = false;
+                
+                section.querySelectorAll('.faq-item').forEach(item => {
+                    const question = item.querySelector('.faq-question').textContent.toLowerCase();
+                    const answer = item.querySelector('.faq-answer').textContent.toLowerCase();
+                    
+                    if (question.includes(searchTerm) || answer.includes(searchTerm)) {
+                        item.style.display = 'block';
+                        sectionHasResults = true;
+                        foundResults = true;
+                        
+                        // Surligner les termes trouvés
+                        highlightText(item, searchTerm);
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+
+                // Afficher/masquer les sections selon les résultats
+                section.style.display = sectionHasResults ? 'block' : 'none';
+            });
+
+            // Afficher/masquer le message "aucun résultat"
+            document.getElementById('noResults').style.display = foundResults ? 'none' : 'block';
+        });
+
+        // Réinitialiser la recherche
+        function resetSearch() {
+            document.querySelectorAll('.faq-section').forEach(section => {
+                section.style.display = 'block';
+                section.querySelectorAll('.faq-item').forEach(item => {
+                    item.style.display = 'block';
+                    removeHighlights(item);
+                });
+            });
+            document.getElementById('noResults').style.display = 'none';
+        }
+
+        // Surligner le texte recherché
+        function highlightText(element, searchTerm) {
+            const question = element.querySelector('.faq-question');
+            const answer = element.querySelector('.faq-answer');
+            
+            [question, answer].forEach(el => {
+                const text = el.innerHTML;
+                const regex = new RegExp(`(${searchTerm})`, 'gi');
+                el.innerHTML = text.replace(regex, '<mark style="background: rgba(0, 255, 136, 0.3); color: var(--neon-green); padding: 2px 4px; border-radius: 3px;">$1</mark>');
+            });
+        }
+
+        // Retirer les surlignements
+        function removeHighlights(element) {
+            const question = element.querySelector('.faq-question');
+            const answer = element.querySelector('.faq-answer');
+            
+            [question, answer].forEach(el => {
+                el.innerHTML = el.innerHTML.replace(/<mark[^>]*>|<\/mark>/g, '');
+            });
+        }
+
+        // Système d'accordéon
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const item = question.parentElement;
+                const isActive = item.classList.contains('active');
+                
+                // Fermer tous les autres items
+                document.querySelectorAll('.faq-item').forEach(otherItem => {
+                    if (otherItem !== item) {
+                        otherItem.classList.remove('active');
+                    }
+                });
+                
+                // Basculer l'état de l'item cliqué
+                item.classList.toggle('active', !isActive);
+            });
+        });
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', () => {
+            // Ouvrir le premier item de chaque section
+            document.querySelectorAll('.faq-section').forEach(section => {
+                const firstItem = section.querySelector('.faq-item');
+                if (firstItem) {
+                    firstItem.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

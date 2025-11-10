@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription - K-SHOP</title>
+    <meta name="description" content="Créez votre compte K-SHOP pour acheter des CP COD:M">
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="https://files.catbox.moe/0fr884.jpeg">
+    <link rel="apple-touch-icon" href="https://files.catbox.moe/0fr884.jpeg">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://files.catbox.moe/0fr884.jpeg">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://files.catbox.moe/0fr884.jpeg">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .auth-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .auth-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 20px;
+            padding: 50px 40px;
+            width: 100%;
+            max-width: 480px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--neon-green), var(--neon-purple), var(--neon-blue));
+            animation: scanline 3s linear infinite;
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .auth-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--neon-green), var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .auth-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .password-requirements {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .requirement {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .requirement.valid {
+            color: var(--neon-green);
+        }
+
+        .requirement i {
+            font-size: 0.8rem;
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .auth-link {
+            color: var(--neon-green);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .auth-link:hover {
+            text-decoration: underline;
+        }
+
+        .terms-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .terms-link {
+            color: var(--neon-blue);
+            text-decoration: none;
+        }
+
+        .terms-link:hover {
+            text-decoration: underline;
+        }
+
+        .redirect-notice {
+            background: rgba(0, 204, 255, 0.1);
+            border: 1px solid var(--neon-blue);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .redirect-icon {
+            color: var(--neon-blue);
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="cyber-grid"></div>
+
+    <!-- Notifications -->
+    <div class="notification-container" id="notificationContainer"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="accueil.html" class="logo">
+                <img src="https://files.catbox.moe/phtnrr.jpeg" alt="K-SHOP Logo" class="logo-image">
+                <div class="logo-text">K-SHOP</div>
+            </a>
+
+            <nav class="nav-controls">
+                <a href="accueil.html" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    Accueil
+                </a>
+                <a href="signin.html" class="nav-link">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Connexion
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1 class="auth-title">Créer un compte</h1>
+                <p class="auth-subtitle">Rejoignez K-SHOP et achetez vos CP COD:M en toute sécurité</p>
+            </div>
+
+            <!-- Notification de redirection -->
+            <div id="redirectNotice" class="redirect-notice" style="display: none;">
+                <div class="redirect-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <div style="font-weight: 600; color: var(--neon-blue); margin-bottom: 5px;">
+                    Achat en attente
+                </div>
+                <div style="font-size: 0.9rem; color: var(--text-secondary);">
+                    Vous serez redirigé vers la page d'achat après inscription
+                </div>
+            </div>
+
+            <form id="signupForm">
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-user"></i>
+                        Nom d'utilisateur*
+                    </label>
+                    <input type="text" class="form-input" id="username" required 
+                           placeholder="Choisissez un nom d'utilisateur unique"
+                           minlength="3" maxlength="20">
+                    <div class="form-hint" style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 5px;">
+                        3-20 caractères, lettres et chiffres uniquement
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-envelope"></i>
+                        Adresse email*
+                    </label>
+                    <input type="email" class="form-input" id="email" required 
+                           placeholder="votre@email.com">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-lock"></i>
+                        Mot de passe*
+                    </label>
+                    <input type="password" class="form-input" id="password" required 
+                           placeholder="Créez un mot de passe sécurisé"
+                           minlength="6">
+                    
+                    <div class="password-requirements">
+                        <div class="requirement" id="reqLength">
+                            <i class="fas fa-circle" style="color: var(--neon-red);"></i>
+                            Au moins 6 caractères
+                        </div>
+                        <div class="requirement" id="reqUppercase">
+                            <i class="fas fa-circle" style="color: var(--neon-red);"></i>
+                            Une lettre majuscule
+                        </div>
+                        <div class="requirement" id="reqNumber">
+                            <i class="fas fa-circle" style="color: var(--neon-red);"></i>
+                            Un chiffre
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-lock"></i>
+                        Confirmer le mot de passe*
+                    </label>
+                    <input type="password" class="form-input" id="confirmPassword" required 
+                           placeholder="Retapez votre mot de passe">
+                    <div class="form-hint" id="passwordMatch" style="font-size: 0.8rem; margin-top: 5px;"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-group" style="display: flex; align-items: flex-start; gap: 10px;">
+                        <input type="checkbox" class="form-checkbox" id="acceptTerms" required style="margin-top: 3px;">
+                        <span style="font-size: 0.9rem; color: var(--text-secondary);">
+                            J'accepte les 
+                            <a href="#" class="terms-link">conditions d'utilisation</a> 
+                            et la 
+                            <a href="#" class="terms-link">politique de confidentialité</a>
+                        </span>
+                    </label>
+                </div>
+
+                <button type="submit" class="cyber-btn" style="width: 100%; justify-content: center; margin-top: 20px;">
+                    <i class="fas fa-user-plus"></i>
+                    Créer mon compte
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                <p style="color: var(--text-secondary);">
+                    Déjà un compte ? 
+                    <a href="signin.html" class="auth-link">Se connecter</a>
+                </p>
+            </div>
+
+            <div class="terms-text">
+                En créant un compte, vous acceptez de recevoir des emails de confirmation et des communications importantes.
+            </div>
+        </div>
+    </main>
+
+    <script src="./js/main.js"></script>
+<script src="./js/auth.js"></script>
+
+<script>
+// Validation mot de passe
+function validatePassword(password) {
+    const hasLength = password.length >= 6;
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+
+    updateRequirement('reqLength', hasLength);
+    updateRequirement('reqUppercase', hasUppercase);
+    updateRequirement('reqNumber', hasNumber);
+
+    return hasLength && hasUppercase && hasNumber;
+}
+
+function updateRequirement(id, isValid) {
+    const element = document.getElementById(id);
+    if (!element) return;
+    
+    const icon = element.querySelector('i');
+    if (isValid) {
+        element.classList.add('valid');
+        icon.style.color = 'var(--neon-green)';
+        icon.className = 'fas fa-check-circle';
+    } else {
+        element.classList.remove('valid');
+        icon.style.color = 'var(--neon-red)';
+        icon.className = 'fas fa-circle';
+    }
+}
+
+function checkPasswordMatch() {
+    const password = document.getElementById('password').value;
+    const confirm = document.getElementById('confirmPassword').value;
+    const matchElement = document.getElementById('passwordMatch');
+
+    if (!matchElement) return;
+
+    if (confirm === '') {
+        matchElement.textContent = '';
+        return false;
+    }
+
+    if (password === confirm) {
+        matchElement.textContent = '✓ Les mots de passe correspondent';
+        matchElement.style.color = 'var(--neon-green)';
+        return true;
+    } else {
+        matchElement.textContent = '✗ Les mots de passe ne correspondent pas';
+        matchElement.style.color = 'var(--neon-red)';
+        return false;
+    }
+}
+
+// Événements
+document.getElementById('password').addEventListener('input', function() {
+    validatePassword(this.value);
+    checkPasswordMatch();
+});
+
+document.getElementById('confirmPassword').addEventListener('input', checkPasswordMatch);
+
+// Soumission du formulaire
+document.getElementById('signupForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    console.log('📤 Formulaire inscription soumis');
+
+    const username = document.getElementById('username').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const acceptTerms = document.getElementById('acceptTerms').checked;
+
+    // Validation
+    if (!acceptTerms) {
+        notificationSystem.show('Veuillez accepter les conditions', 'error');
+        return;
+    }
+
+    if (!validatePassword(password)) {
+        notificationSystem.show('Le mot de passe ne respecte pas les exigences', 'error');
+        return;
+    }
+
+    if (!checkPasswordMatch()) {
+        notificationSystem.show('Les mots de passe ne correspondent pas', 'error');
+        return;
+    }
+
+    // Désactiver le bouton
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Création...';
+    submitBtn.disabled = true;
+
+    try {
+        const success = await register(username, email, password);
+        
+        if (success) {
+            setTimeout(() => {
+                window.location.href = `/verification-compte?email=${encodeURIComponent(email)}`;
+            }, 2000);
+        }
+    } finally {
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    }
+});
+
+// Initialisation
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('🏠 Page inscription chargée');
+    
+    if (currentUser) {
+        notificationSystem.show('Vous êtes déjà connecté', 'info');
+        setTimeout(() => window.location.href = '/', 1000);
+    }
+});
+</script>

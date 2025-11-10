@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vérification Email - K-SHOP</title>
+    <meta name="description" content="Vérifiez votre adresse email pour activer votre compte K-SHOP">
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="https://files.catbox.moe/0fr884.jpeg">
+    <link rel="apple-touch-icon" href="https://files.catbox.moe/0fr884.jpeg">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://files.catbox.moe/0fr884.jpeg">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://files.catbox.moe/0fr884.jpeg">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .verification-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .verification-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 20px;
+            padding: 50px 40px;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .verification-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--neon-green), var(--neon-purple), var(--neon-blue));
+            animation: scanline 3s linear infinite;
+        }
+
+        .verification-icon {
+            font-size: 4rem;
+            color: var(--neon-green);
+            margin-bottom: 20px;
+        }
+
+        .verification-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--neon-green), var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+
+        .verification-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .email-display {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 25px 0;
+            font-weight: 600;
+            color: var(--neon-green);
+        }
+
+        .verification-steps {
+            text-align: left;
+            margin: 30px 0;
+        }
+
+        .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .step-number {
+            background: linear-gradient(135deg, var(--neon-green), var(--neon-blue));
+            color: var(--dark-bg);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .step-content h4 {
+            color: var(--neon-green);
+            margin-bottom: 5px;
+        }
+
+        .step-content p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .resend-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .countdown {
+            color: var(--neon-orange);
+            font-weight: 600;
+            margin: 10px 0;
+        }
+
+        .success-state, .pending-state {
+            display: none;
+        }
+
+        .success-state .verification-icon {
+            color: var(--neon-green);
+            animation: bounce 1s ease infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="cyber-grid"></div>
+
+    <!-- Notifications -->
+    <div class="notification-container" id="notificationContainer"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="accueil.html" class="logo">
+                <img src="https://files.catbox.moe/0fr884.jpeg" alt="K-SHOP Logo" class="logo-image">
+                <div class="logo-text">K-SHOP</div>
+            </a>
+
+            <nav class="nav-controls">
+                <a href="accueil.html" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    Accueil
+                </a>
+                <a href="signin.html" class="nav-link">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Connexion
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="verification-container">
+        <div class="verification-card">
+            <!-- État en attente -->
+            <div class="pending-state" id="pendingState">
+                <div class="verification-icon">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                
+                <h1 class="verification-title">Vérifiez votre email</h1>
+                
+                <p class="verification-subtitle">
+                    Nous avons envoyé un lien de vérification à l'adresse :
+                </p>
+
+                <div class="email-display" id="emailDisplay">
+                    Chargement...
+                </div>
+
+                <p class="verification-subtitle">
+                    Cliquez sur le lien dans l'email pour activer votre compte.
+                </p>
+
+                <div class="verification-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Vérifiez votre boîte de réception</h4>
+                            <p>Ouvrez l'email de K-SHOP et cliquez sur le lien de vérification</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Vérification automatique</h4>
+                            <p>Votre compte sera activé automatiquement après confirmation</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Commencez à acheter</h4>
+                            <p>Accédez à tous les produits et fonctionnalités de K-SHOP</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="resend-section">
+                    <p style="color: var(--text-secondary); margin-bottom: 15px;">
+                        Vous n'avez pas reçu l'email ?
+                    </p>
+                    <button id="resendBtn" class="cyber-btn">
+                        <i class="fas fa-redo"></i>
+                        Renvoyer l'email de vérification
+                    </button>
+                    <div class="countdown" id="countdown">
+                        Vous pourrez renvoyer dans <span id="timer">60</span> secondes
+                    </div>
+                </div>
+
+                <div style="margin-top: 30px;">
+                    <a href="signin.html" class="nav-link">
+                        <i class="fas fa-arrow-left"></i>
+                        Retour à la connexion
+                    </a>
+                </div>
+            </div>
+
+            <!-- État succès -->
+            <div class="success-state" id="successState">
+                <div class="verification-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                
+                <h1 class="verification-title">Email Vérifié !</h1>
+                
+                <p class="verification-subtitle">
+                    Félicitations ! Votre adresse email a été vérifiée avec succès.
+                </p>
+
+                <div style="margin-top: 40px;">
+                    <a href="signin.html" class="cyber-btn" style="font-size: 1.1rem; padding: 15px 30px;">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Se connecter
+                    </a>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <a href="accueil.html" class="nav-link">
+                        <i class="fas fa-home"></i>
+                        Retour à l'accueil
+                    </a>
+                </div>
+            </div>
+
+            <!-- État vérification automatique -->
+            <div class="pending-state" id="autoVerifyState">
+                <div class="loading-spinner" style="width: 60px; height: 60px; margin: 20px auto;"></div>
+                <h1 class="verification-title">Vérification en cours</h1>
+                <p class="verification-subtitle">
+                    Vérification automatique de votre email...
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+    
+    <script>
+        let resendCooldown = 60;
+        let cooldownTimer;
+
+        // Afficher l'email depuis l'URL
+        function displayEmailFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const email = urlParams.get('email');
+            const token = urlParams.get('token');
+            
+            const emailDisplay = document.getElementById('emailDisplay');
+            
+            if (email) {
+                emailDisplay.textContent = email;
+                localStorage.setItem('pendingVerificationEmail', email);
+            } else {
+                const savedEmail = localStorage.getItem('pendingVerificationEmail');
+                if (savedEmail) {
+                    emailDisplay.textContent = savedEmail;
+                } else {
+                    emailDisplay.textContent = 'Email non spécifié';
+                }
+            }
+
+            // Si un token est présent, tenter la vérification automatique
+            if (token) {
+                showAutoVerifyState();
+                verifyEmailToken(token);
+            }
+        }
+
+        // Afficher l'état de vérification automatique
+        function showAutoVerifyState() {
+            document.getElementById('pendingState').style.display = 'none';
+            document.getElementById('autoVerifyState').style.display = 'block';
+            document.getElementById('successState').style.display = 'none';
+        }
+
+        // Afficher l'état de succès
+        function showSuccessState() {
+            document.getElementById('pendingState').style.display = 'none';
+            document.getElementById('autoVerifyState').style.display = 'none';
+            document.getElementById('successState').style.display = 'block';
+            
+            // Nettoyer l'email en attente
+            localStorage.removeItem('pendingVerificationEmail');
+        }
+
+        // Afficher l'état en attente
+        function showPendingState() {
+            document.getElementById('pendingState').style.display = 'block';
+            document.getElementById('autoVerifyState').style.display = 'none';
+            document.getElementById('successState').style.display = 'none';
+        }
+
+        // Vérifier l'email avec le token
+        async function verifyEmailToken(token) {
+            try {
+                const success = await verifyEmail(token);
+                
+                if (success) {
+                    setTimeout(() => {
+                        showSuccessState();
+                    }, 1500);
+                } else {
+                    showPendingState();
+                    notificationSystem.show('Le lien de vérification a expiré ou est invalide', 'error');
+                }
+            } catch (error) {
+                showPendingState();
+                notificationSystem.show('Erreur lors de la vérification', 'error');
+            }
+        }
+
+        // Renvoyer l'email de vérification
+        async function resendVerificationEmail() {
+            const email = document.getElementById('emailDisplay').textContent;
+            
+            if (!email || email === 'Chargement...' || email === 'Email non spécifié') {
+                notificationSystem.show('Impossible de déterminer l\'email à vérifier', 'error');
+                return;
+            }
+
+            try {
+                // Simuler l'envoi d'email (à remplacer par ton appel API)
+                const response = await fetch(`${API_BASE_URL}/auth/resend-verification`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Erreur lors de l\'envoi');
+                }
+
+                notificationSystem.show('Email de vérification renvoyé avec succès!', 'success');
+                startCooldown();
+
+            } catch (error) {
+                notificationSystem.show('Erreur lors de l\'envoi de l\'email', 'error');
+            }
+        }
+
+        // Gérer le compte à rebours
+        function startCooldown() {
+            const resendBtn = document.getElementById('resendBtn');
+            const countdown = document.getElementById('countdown');
+            const timer = document.getElementById('timer');
+            
+            resendBtn.disabled = true;
+            countdown.style.display = 'block';
+            resendCooldown = 60;
+
+            cooldownTimer = setInterval(() => {
+                resendCooldown--;
+                timer.textContent = resendCooldown;
+
+                if (resendCooldown <= 0) {
+                    clearInterval(cooldownTimer);
+                    resendBtn.disabled = false;
+                    countdown.style.display = 'none';
+                }
+            }, 1000);
+        }
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', () => {
+            displayEmailFromURL();
+            startCooldown();
+
+            // Vérifier si l'utilisateur est déjà vérifié/connecté
+            if (currentUser) {
+                notificationSystem.show('Vous êtes déjà connecté', 'info');
+                setTimeout(() => window.location.href = 'accueil.html', 1000);
+            }
+
+            // Événement du bouton renvoyer
+            document.getElementById('resendBtn').addEventListener('click', resendVerificationEmail);
+        });
+
+        // Nettoyer le timer quand la page se ferme
+        window.addEventListener('beforeunload', () => {
+            if (cooldownTimer) {
+                clearInterval(cooldownTimer);
+            }
+        });
+    </script>
+</body>
+</html>

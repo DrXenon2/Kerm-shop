@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil - K-SHOP | Vente de CP COD:M</title>
+    <meta name="description" content="Achetez des CP Call of Duty Mobile au meilleur prix. Livraison instantanée, support 24/7.">
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="https://files.catbox.moe/0fr884.jpeg">
+    <link rel="apple-touch-icon" href="https://files.catbox.moe/0fr884.jpeg">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://files.catbox.moe/0fr884.jpeg">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://files.catbox.moe/0fr884.jpeg">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .auth-required-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            z-index: 10;
+        }
+
+        .auth-icon {
+            font-size: 3rem;
+            color: var(--neon-blue);
+            margin-bottom: 20px;
+        }
+
+        .auth-message {
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .auth-submessage {
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .payment-method {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .payment-method:hover {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: rgba(0, 255, 136, 0.3);
+        }
+
+        .payment-method.selected {
+            background: rgba(0, 255, 136, 0.2);
+            border-color: var(--neon-green);
+        }
+
+        .payment-icon {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+
+        .fapshi-icon { color: #7B61FF; }
+
+        .payment-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .direct-payment-section {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+            text-align: center;
+        }
+
+        .direct-payment-title {
+            color: var(--neon-green);
+            font-weight: 700;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .payment-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .payment-link-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px;
+            background: linear-gradient(135deg, #7B61FF, #9D4EDD);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .payment-link-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(123, 97, 255, 0.4);
+        }
+
+        .payment-link-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .payment-link-btn:disabled:hover {
+            box-shadow: none;
+            transform: none;
+        }
+
+        .payment-info {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 10px;
+        }
+
+        .quick-buy-btn {
+            margin-top: 15px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .product-features {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .feature i {
+            color: var(--neon-green);
+            font-size: 0.8rem;
+        }
+
+        .fapshi-badge {
+            background: linear-gradient(135deg, #7B61FF, #9D4EDD);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .player-id-input {
+            font-family: monospace;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+        }
+
+        .user-welcome {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .welcome-text {
+            color: var(--neon-green);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .user-email {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="cyber-grid"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="accueil.html" class="logo">
+                <img src="https://files.catbox.moe/0fr884.jpeg" alt="K-SHOP Logo" class="logo-image">
+                <div class="logo-text">K-SHOP</div>
+            </a>
+
+            <nav class="nav-controls">
+                <a href="accueil.html" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    Accueil
+                </a>
+                <a href="comptes.html" class="nav-link">
+                    <i class="fas fa-users"></i>
+                    Comptes
+                </a>
+                <a href="faq.html" class="nav-link">
+                    <i class="fas fa-question-circle"></i>
+                    FAQ
+                </a>
+                <a href="support.html" class="nav-link">
+                    <i class="fas fa-headset"></i>
+                    Support
+                </a>
+                
+                <!-- Liens authentification -->
+                <div id="authLinks" style="display: flex; gap: 10px;">
+                    <a href="signin.html" class="nav-link">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Connexion
+                    </a>
+                    <a href="signup.html" class="cyber-btn">
+                        <i class="fas fa-user-plus"></i>
+                        Inscription
+                    </a>
+                </div>
+
+                <!-- Liens utilisateur connecté -->
+                <div id="userLinks" style="display: none; align-items: center; gap: 15px;">
+                    <a href="user.html" class="nav-link">
+                        <i class="fas fa-user"></i>
+                        Mon Compte
+                    </a>
+                    <a href="historique.html" class="nav-link">
+                        <i class="fas fa-history"></i>
+                        Historique
+                    </a>
+                    <button onclick="logout()" class="nav-link" style="background: none; border: none;">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Déconnexion
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="page-header">
+            <h1 class="page-title">K-SHOP</h1>
+            <p class="page-subtitle">
+                Vente de comptes Call of Duty Mobile et CP Call of Duty Mobile. 
+                Paiement sécurisé par <span class="fapshi-badge">Fapshi</span> avec livraison instantanée.
+            </p>
+        </div>
+
+        <!-- Message de bienvenue si connecté -->
+        <div id="userWelcome" class="user-welcome" style="display: none;">
+            <div class="welcome-text">
+                <i class="fas fa-check-circle"></i>
+                Bienvenue, <span id="usernameDisplay"></span> !
+            </div>
+            <div class="user-email" id="userEmailDisplay"></div>
+        </div>
+
+        <!-- Produits CP -->
+        <div class="products-grid" id="productsGrid">
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <p>Chargement des produits...</p>
+            </div>
+        </div>
+
+        <!-- Section Comptes -->
+        <div style="margin-top: 80px; text-align: center;">
+            <h2 style="font-size: 2.5rem; margin-bottom: 20px; color: var(--neon-green);">
+                Comptes COD:M Premium
+            </h2>
+            <p style="color: var(--text-secondary); margin-bottom: 40px;">
+                Découvrez notre sélection de comptes premium avec armes légendaires et personnages mythiques
+            </p>
+            <a href="comptes.html" class="cyber-btn" style="font-size: 1.1rem; padding: 15px 30px;">
+                <i class="fas fa-store"></i>
+                Voir tous les comptes
+            </a>
+        </div>
+    </main>
+
+    <!-- Modal de commande -->
+    <div class="modal" id="checkoutModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Finaliser la commande</h3>
+                <button class="close-modal" onclick="closeCheckoutModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div id="checkoutForm">
+                <!-- Informations utilisateur -->
+                <div class="user-welcome" id="modalUserInfo" style="display: none;">
+                    <div class="welcome-text">
+                        <i class="fas fa-user-check"></i>
+                        Connecté en tant que: <span id="modalUsername"></span>
+                    </div>
+                    <div class="user-email" id="modalUserEmail"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">ID du Joueur COD:M <span class="fapshi-badge">19 chiffres</span></label>
+                    <input type="text" class="form-input player-id-input" id="playerId" required 
+                           placeholder="6748372881926354829"
+                           pattern="\d{19}" 
+                           title="Doit contenir exactement 19 chiffres"
+                           maxlength="19">
+                    <label style="display: flex; align-items: center; gap: 8px; margin-top: 8px;">
+                        <input type="checkbox" id="savePlayerId">
+                        <span style="font-size: 0.9rem; color: var(--text-secondary);">
+                            Enregistrer pour les prochains achats
+                        </span>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Méthode de Paiement <span class="fapshi-badge">Sécurisé</span></label>
+                    <div class="payment-methods">
+                        <div class="payment-method selected" data-method="fapshi">
+                            <div class="payment-icon fapshi-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="payment-name">Fapshi</div>
+                            <div style="font-size: 0.7rem; color: var(--text-secondary);">Tous opérateurs</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div style="background: rgba(123, 97, 255, 0.1); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+                        <strong style="color: #7B61FF;">Récapitulatif de la commande:</strong>
+                        <div id="orderSummary" style="margin-top: 10px;"></div>
+                    </div>
+                </div>
+
+                <!-- Section Paiement Direct Fapshi -->
+                <div class="direct-payment-section">
+                    <div class="direct-payment-title">
+                        <i class="fas fa-lock"></i>
+                        Paiement Sécurisé Fapshi
+                    </div>
+                    <p style="color: var(--text-secondary); margin-bottom: 15px;">
+                        Cliquez sur le bouton pour être redirigé vers la page de paiement sécurisée Fapshi
+                    </p>
+                    
+                    <div class="payment-links" id="paymentLinks">
+                        <!-- Le lien Fapshi sera généré dynamiquement -->
+                    </div>
+                    
+                    <div class="payment-info">
+                        <i class="fas fa-shield-alt"></i>
+                        Paiement 100% sécurisé • Livraison automatique après confirmation
+                    </div>
+
+                    <div style="margin-top: 20px; padding: 15px; background: rgba(123, 97, 255, 0.05); border-radius: 10px;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                            <i class="fas fa-bolt" style="color: #7B61FF;"></i>
+                            <strong style="color: #7B61FF;">Processus automatique :</strong>
+                        </div>
+                        <ol style="color: var(--text-secondary); font-size: 0.9rem; padding-left: 20px; text-align: left;">
+                            <li>Paiement sur Fapshi</li>
+                            <li>Confirmation automatique</li>
+                            <li>Livraison des CP dans les 2-5 minutes</li>
+                            <li>Notification par email</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p class="footer-text">
+                &copy; 2025 K-SHOP. Tous droits réservés.<br>
+                Développé par Kerm • Paiements sécurisés par <strong>Fapshi</strong>
+            </p>
+            <div class="social-links">
+                <a href="#" class="social-link">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+                <a href="#" class="social-link">
+                    <i class="fab fa-telegram"></i>
+                </a>
+                <a href="#" class="social-link">
+                    <i class="fab fa-discord"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Configuration
+        const API_BASE_URL = 'https://kerm-shop.onrender.com/api';
+        let currentUser = null;
+        let selectedProduct = null;
+
+        // Produits CP avec liens Fapshi réels
+        const cpProducts = [
+            { 
+                cpAmount: 80, 
+                price: 699.54, 
+                discount: 0,
+                fapshiLink: "https://checkout.fapshi.com/link/34858888",
+                features: [
+                    "Livraison instantanée",
+                    "Support 24/7",
+                    "Garantie satisfait ou remboursé",
+                    "Paiement sécurisé Fapshi"
+                ]
+            },
+            { 
+                cpAmount: 400, 
+                price: 3497.70, 
+                discount: 0,
+                fapshiLink: "https://checkout.fapshi.com/link/34858889",
+                features: [
+                    "Livraison instantanée", 
+                    "Support 24/7",
+                    "Garantie satisfait ou remboursé",
+                    "Meilleur rapport qualité/prix",
+                    "Paiement sécurisé Fapshi"
+                ]
+            },
+            { 
+                cpAmount: 2000, 
+                price: 17488.50, 
+                discount: 0,
+                fapshiLink: "https://checkout.fapshi.com/link/34858890",
+                features: [
+                    "Livraison instantanée",
+                    "Support 24/7", 
+                    "Garantie satisfait ou remboursé",
+                    "Économie importante",
+                    "Paiement sécurisé Fapshi"
+                ]
+            },
+            { 
+                cpAmount: 4000, 
+                price: 34977.00, 
+                discount: 0,
+                fapshiLink: "https://checkout.fapshi.com/link/34858891",
+                features: [
+                    "Livraison instantanée",
+                    "Support 24/7",
+                    "Garantie satisfait ou remboursé",
+                    "Pack premium",
+                    "Paiement sécurisé Fapshi"
+                ]
+            },
+            { 
+                cpAmount: 10800, 
+                price: 65429.59, 
+                discount: 10, 
+                originalPrice: 72699.54,
+                fapshiLink: "https://checkout.fapshi.com/link/34858892",
+                features: [
+                    "Livraison instantanée",
+                    "Support 24/7",
+                    "Garantie satisfait ou remboursé", 
+                    "10% de réduction",
+                    "Pack ultime",
+                    "Paiement sécurisé Fapshi"
+                ]
+            }
+        ];
+
+        // Système de notifications simple
+        class NotificationSystem {
+            show(message, type = 'success') {
+                const icon = type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️';
+                alert(`${icon} ${message}`);
+            }
+        }
+
+        const notificationSystem = new NotificationSystem();
+
+        // Charger les produits avec overlay si non connecté
+        function loadProducts() {
+            const grid = document.getElementById('productsGrid');
+            
+            if (!currentUser) {
+                // Utilisateur non connecté - afficher overlay
+                grid.innerHTML = cpProducts.map(product => `
+                    <div class="product-card" style="position: relative;">
+                        <div class="auth-required-overlay">
+                            <div class="auth-icon">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <div class="auth-message">Connexion Requise</div>
+                            <div class="auth-submessage">
+                                Connectez-vous pour acheter ce produit
+                            </div>
+                            <div class="auth-buttons">
+                                <a href="signin.html" class="cyber-btn">
+                                    <i class="fas fa-sign-in-alt"></i>
+                                    Se connecter
+                                </a>
+                                <a href="signup.html" class="cyber-btn" style="background: rgba(0, 204, 255, 0.2); color: var(--neon-blue); border-color: var(--neon-blue);">
+                                    <i class="fas fa-user-plus"></i>
+                                    Créer un compte
+                                </a>
+                            </div>
+                        </div>
+                        <div class="product-amount">${product.cpAmount} CP</div>
+                        <div class="product-price">${product.price.toLocaleString()} XAF</div>
+                        ${product.discount > 0 ? `
+                            <div class="product-discount">
+                                ${product.discount}% de réduction
+                            </div>
+                            <div style="color: var(--text-secondary); text-decoration: line-through; font-size: 0.9rem;">
+                                ${product.originalPrice.toLocaleString()} XAF
+                            </div>
+                        ` : ''}
+                        
+                        <div class="product-features">
+                            ${product.features.map(feature => `
+                                <div class="feature">
+                                    <i class="fas fa-check"></i>
+                                    ${feature}
+                                </div>
+                            `).join('')}
+                        </div>
+
+                        <button class="cyber-btn quick-buy-btn" disabled style="opacity: 0.5; cursor: not-allowed;">
+                            <i class="fas fa-lock"></i>
+                            Connexion requise
+                        </button>
+                    </div>
+                `).join('');
+            } else {
+                // Utilisateur connecté - afficher produits normaux
+                grid.innerHTML = cpProducts.map(product => `
+                    <div class="product-card" data-cp="${product.cpAmount}">
+                        <div class="product-amount">${product.cpAmount} CP</div>
+                        <div class="product-price">${product.price.toLocaleString()} XAF</div>
+                        ${product.discount > 0 ? `
+                            <div class="product-discount">
+                                ${product.discount}% de réduction
+                            </div>
+                            <div style="color: var(--text-secondary); text-decoration: line-through; font-size: 0.9rem;">
+                                ${product.originalPrice.toLocaleString()} XAF
+                            </div>
+                        ` : ''}
+                        
+                        <div class="product-features">
+                            ${product.features.map(feature => `
+                                <div class="feature">
+                                    <i class="fas fa-check"></i>
+                                    ${feature}
+                                </div>
+                            `).join('')}
+                        </div>
+
+                        <button class="cyber-btn quick-buy-btn" onclick="quickBuy(${product.cpAmount})">
+                            <i class="fas fa-bolt"></i>
+                            Acheter avec Fapshi
+                        </button>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Achat rapide - Vérifier la connexion
+        function quickBuy(cpAmount) {
+            if (!currentUser) {
+                notificationSystem.show('Veuillez vous connecter pour acheter', 'error');
+                setTimeout(() => {
+                    window.location.href = 'signin.html';
+                }, 1500);
+                return;
+            }
+
+            selectedProduct = cpProducts.find(p => p.cpAmount === cpAmount);
+            if (!selectedProduct) {
+                notificationSystem.show('Produit non trouvé', 'error');
+                return;
+            }
+
+            openCheckoutModal();
+        }
+
+        // Ouvrir le modal de commande
+        function openCheckoutModal() {
+            if (!selectedProduct) {
+                notificationSystem.show('Veuillez sélectionner un produit', 'error');
+                return;
+            }
+
+            if (!currentUser) {
+                notificationSystem.show('Session expirée. Veuillez vous reconnecter.', 'error');
+                setTimeout(() => {
+                    window.location.href = 'signin.html';
+                }, 1500);
+                return;
+            }
+
+            const modal = document.getElementById('checkoutModal');
+            const summary = document.getElementById('orderSummary');
+            
+            // Mettre à jour les infos utilisateur dans le modal
+            document.getElementById('modalUserInfo').style.display = 'block';
+            document.getElementById('modalUsername').textContent = currentUser.username;
+            document.getElementById('modalUserEmail').textContent = currentUser.email;
+            
+            // Mettre à jour le récapitulatif
+            summary.innerHTML = `
+                <div><strong>Produit:</strong> ${selectedProduct.cpAmount} CP</div>
+                <div style="font-size: 1.2rem; font-weight: 700; color: #7B61FF; margin: 10px 0;">
+                    ${selectedProduct.price.toLocaleString()} XAF
+                </div>
+                ${selectedProduct.discount > 0 ? `
+                    <div style="color: var(--neon-green); font-size: 0.9rem;">
+                        Économie: ${selectedProduct.discount}% de réduction
+                    </div>
+                ` : ''}
+                <div style="margin-top: 10px; padding: 8px; background: rgba(123, 97, 255, 0.1); border-radius: 5px;">
+                    <i class="fas fa-shield-alt" style="color: #7B61FF;"></i>
+                    <span style="color: #7B61FF; font-size: 0.8rem;">Paiement sécurisé Fapshi</span>
+                </div>
+            `;
+
+            // Générer le lien Fapshi
+            generateFapshiLink();
+
+            modal.style.display = 'flex';
+        }
+
+        // Fermer le modal
+        function closeCheckoutModal() {
+            document.getElementById('checkoutModal').style.display = 'none';
+            document.getElementById('modalUserInfo').style.display = 'none';
+            selectedProduct = null;
+        }
+
+        // Générer le lien Fapshi
+        function generateFapshiLink() {
+            if (!selectedProduct) return;
+            
+            const paymentLinksContainer = document.getElementById('paymentLinks');
+            const product = selectedProduct;
+            
+            paymentLinksContainer.innerHTML = '';
+            
+            const fapshiButton = document.createElement('a');
+            fapshiButton.href = product.fapshiLink;
+            fapshiButton.target = '_blank';
+            fapshiButton.className = 'payment-link-btn';
+            fapshiButton.id = 'fapshiPaymentBtn';
+            fapshiButton.innerHTML = `
+                <i class="fas fa-lock"></i>
+                Payer ${product.cpAmount} CP - ${product.price.toLocaleString()} XAF
+            `;
+            
+            paymentLinksContainer.appendChild(fapshiButton);
+            
+            // Ajouter la validation avant redirection
+            fapshiButton.addEventListener('click', function(e) {
+                if (!validatePlayerId()) {
+                    e.preventDefault();
+                    return false;
+                }
+                trackFapshiClick();
+            });
+        }
+
+        // Valider le Player ID
+        function validatePlayerId() {
+            const playerId = document.getElementById('playerId').value.trim();
+            const playerIdInput = document.getElementById('playerId');
+            
+            if (!playerId) {
+                notificationSystem.show('Veuillez entrer votre Player ID COD:M', 'error');
+                playerIdInput.focus();
+                return false;
+            }
+
+            if (!/^\d{19}$/.test(playerId)) {
+                notificationSystem.show('Player ID invalide! Doit contenir exactement 19 chiffres.', 'error');
+                playerIdInput.focus();
+                return false;
+            }
+
+            // Sauvegarder le Player ID si demandé
+            if (document.getElementById('savePlayerId').checked) {
+                localStorage.setItem('savedPlayerId', playerId);
+            }
+
+            return true;
+        }
+
+        // Suivre les clics sur Fapshi
+        function trackFapshiClick() {
+            const playerId = document.getElementById('playerId').value;
+            const product = selectedProduct;
+            
+            // Enregistrer la transaction avec l'ID utilisateur
+            const transaction = {
+                product: `${product.cpAmount} CP`,
+                price: product.price,
+                playerId: playerId,
+                userId: currentUser.id,
+                username: currentUser.username,
+                timestamp: new Date().toISOString(),
+                status: 'redirected_to_fapshi'
+            };
+            
+            let transactions = JSON.parse(localStorage.getItem('kshop_transactions') || '[]');
+            transactions.push(transaction);
+            localStorage.setItem('kshop_transactions', JSON.stringify(transactions));
+            
+            notificationSystem.show(`Redirection vers Fapshi! Player ID: ${playerId}`, 'success');
+            
+            // Fermer le modal après un court délai
+            setTimeout(() => {
+                closeCheckoutModal();
+            }, 1000);
+        }
+
+        // Vérifier l'authentification
+        function checkAuth() {
+            const token = localStorage.getItem('kshop_token');
+            if (token) {
+                try {
+                    const payload = JSON.parse(atob(token.split('.')[1]));
+                    currentUser = {
+                        id: payload.id,
+                        username: payload.username,
+                        email: payload.email
+                    };
+                    updateNavigation();
+                    showUserWelcome();
+                } catch (error) {
+                    localStorage.removeItem('kshop_token');
+                }
+            }
+        }
+
+        // Afficher le message de bienvenue
+        function showUserWelcome() {
+            const welcomeSection = document.getElementById('userWelcome');
+            const usernameDisplay = document.getElementById('usernameDisplay');
+            const userEmailDisplay = document.getElementById('userEmailDisplay');
+            
+            if (currentUser) {
+                welcomeSection.style.display = 'block';
+                usernameDisplay.textContent = currentUser.username;
+                userEmailDisplay.textContent = currentUser.email;
+            } else {
+                welcomeSection.style.display = 'none';
+            }
+        }
+
+        // Mettre à jour la navigation
+        function updateNavigation() {
+            const authLinks = document.getElementById('authLinks');
+            const userLinks = document.getElementById('userLinks');
+            
+            if (currentUser) {
+                if (authLinks) authLinks.style.display = 'none';
+                if (userLinks) userLinks.style.display = 'flex';
+            } else {
+                if (authLinks) authLinks.style.display = 'flex';
+                if (userLinks) userLinks.style.display = 'none';
+            }
+        }
+
+        // Déconnexion
+        function logout() {
+            localStorage.removeItem('kshop_token');
+            currentUser = null;
+            updateNavigation();
+            showUserWelcome();
+            loadProducts(); // Recharger les produits pour afficher les overlays
+            notificationSystem.show('Déconnexion réussie', 'success');
+        }
+
+        // Chargement initial
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+            loadProducts();
+            
+            // Charger le Player ID sauvegardé
+            const savedPlayerId = localStorage.getItem('savedPlayerId');
+            if (savedPlayerId) {
+                document.getElementById('playerId').value = savedPlayerId;
+                document.getElementById('savePlayerId').checked = true;
+            }
+
+            // Validation en temps réel du Player ID
+            document.getElementById('playerId').addEventListener('input', function() {
+                const playerId = this.value;
+                if (playerId.length === 19 && /^\d+$/.test(playerId)) {
+                    this.style.borderColor = 'var(--neon-green)';
+                    this.style.boxShadow = '0 0 10px rgba(0, 255, 136, 0.3)';
+                } else if (playerId.length > 0) {
+                    this.style.borderColor = 'var(--neon-red)';
+                    this.style.boxShadow = '0 0 10px rgba(255, 68, 68, 0.3)';
+                } else {
+                    this.style.borderColor = 'rgba(0, 255, 136, 0.3)';
+                    this.style.boxShadow = 'none';
+                }
+            });
+
+            // Fermer le modal en cliquant à l'extérieur
+            document.getElementById('checkoutModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeCheckoutModal();
+                }
+            });
+
+            // Empêcher la fermeture du modal en cliquant à l'intérieur
+            document.querySelector('.modal-content').addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+
+            console.log('✅ K-SHOP initialisé avec succès');
+        });
+    </script>
+</body>
+</html>
