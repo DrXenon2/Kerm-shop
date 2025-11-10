@@ -502,7 +502,7 @@
     <header class="admin-header">
         <div class="admin-header-content">
             <div class="admin-logo">
-                <img src="https://files.catbox.moe/phtnrr.jpeg" alt="K-SHOP Admin" class="admin-logo-image">
+                <img src="https://files.catbox.moe/0fr884.jpeg" alt="K-SHOP Admin" class="admin-logo-image">
                 <div class="admin-logo-text">K-SHOP ADMIN</div>
             </div>
             
@@ -899,10 +899,10 @@
                 const orders = await ordersRes.json();
 
                 // Mettre à jour les statistiques
-                document.getElementById('totalOrders').textContent = stats.totalOrders;
-                document.getElementById('pendingOrders').textContent = stats.pendingOrders;
-                document.getElementById('completedOrders').textContent = stats.completedOrders;
-                document.getElementById('totalAccounts').textContent = stats.totalAccounts;
+                document.getElementById('totalOrders').textContent = stats.totalOrders || 0;
+                document.getElementById('pendingOrders').textContent = stats.pendingOrders || 0;
+                document.getElementById('completedOrders').textContent = stats.completedOrders || 0;
+                document.getElementById('totalAccounts').textContent = stats.totalAccounts || 0;
 
                 // Mettre à jour le tableau des commandes récentes
                 updateRecentOrdersTable(orders);
@@ -917,19 +917,19 @@
         function updateRecentOrdersTable(orders) {
             const tbody = document.getElementById('recentOrdersTable');
             
-            if (orders.length === 0) {
+            if (!orders || orders.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 40px; color: var(--text-secondary);">Aucune commande récente</td></tr>';
                 return;
             }
 
             tbody.innerHTML = orders.map(order => `
                 <tr>
-                    <td>${order._id.slice(-8)}</td>
-                    <td>${order.user?.username || 'N/A'}</td>
-                    <td>${order.product.cpAmount} CP</td>
-                    <td>${order.product.price} XAF</td>
+                    <td>${order._id ? order._id.slice(-8) : 'N/A'}</td>
+                    <td>${order.user?.username || order.customerInfo?.firstName || 'N/A'}</td>
+                    <td>${order.product?.cpAmount || 0} CP</td>
+                    <td>${order.product?.price || 0} XAF</td>
                     <td><span class="status-badge status-${order.status}">${getStatusText(order.status)}</span></td>
-                    <td>${new Date(order.createdAt).toLocaleDateString('fr-FR')}</td>
+                    <td>${order.createdAt ? new Date(order.createdAt).toLocaleDateString('fr-FR') : 'N/A'}</td>
                     <td>
                         <button class="action-btn btn-edit" onclick="viewOrder('${order._id}')">
                             <i class="fas fa-eye"></i>
@@ -958,19 +958,19 @@
         function updateAllOrdersTable(orders) {
             const tbody = document.getElementById('allOrdersTable');
             
-            if (orders.length === 0) {
+            if (!orders || orders.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; padding: 40px; color: var(--text-secondary);">Aucune commande</td></tr>';
                 return;
             }
 
             tbody.innerHTML = orders.map(order => `
                 <tr>
-                    <td>${order._id.slice(-8)}</td>
+                    <td>${order._id ? order._id.slice(-8) : 'N/A'}</td>
                     <td>${order.customerInfo?.firstName || 'N/A'} ${order.customerInfo?.lastName || ''}</td>
-                    <td>${order.playerId}</td>
-                    <td>${order.product.cpAmount} CP</td>
-                    <td>${order.product.price} XAF</td>
-                    <td>${order.paymentMethod}</td>
+                    <td>${order.playerId || 'N/A'}</td>
+                    <td>${order.product?.cpAmount || 0} CP</td>
+                    <td>${order.product?.price || 0} XAF</td>
+                    <td>${order.paymentMethod || 'N/A'}</td>
                     <td>
                         <select class="form-select status-select" data-order-id="${order._id}" style="padding: 5px; font-size: 0.8rem;">
                             <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>En Attente</option>
@@ -979,7 +979,7 @@
                             <option value="failed" ${order.status === 'failed' ? 'selected' : ''}>Échoué</option>
                         </select>
                     </td>
-                    <td>${new Date(order.createdAt).toLocaleDateString('fr-FR')}</td>
+                    <td>${order.createdAt ? new Date(order.createdAt).toLocaleDateString('fr-FR') : 'N/A'}</td>
                     <td>
                         <button class="action-btn btn-save" onclick="updateOrderStatus('${order._id}')">
                             <i class="fas fa-save"></i>
@@ -1074,20 +1074,20 @@
         function updateAccountsTable(accounts) {
             const tbody = document.getElementById('accountsTable');
             
-            if (accounts.length === 0) {
+            if (!accounts || accounts.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; padding: 40px; color: var(--text-secondary);">Aucun compte</td></tr>';
                 return;
             }
 
             tbody.innerHTML = accounts.map(account => `
                 <tr>
-                    <td>${account.uid}</td>
-                    <td>${account.level}</td>
-                    <td>${account.mythicCharacters}</td>
-                    <td>${account.legendaryCharacters}</td>
-                    <td>${account.mythicWeapons}</td>
-                    <td>${account.legendaryWeapons}</td>
-                    <td>${account.price} XAF</td>
+                    <td>${account.uid || 'N/A'}</td>
+                    <td>${account.level || 0}</td>
+                    <td>${account.mythicCharacters || 0}</td>
+                    <td>${account.legendaryCharacters || 0}</td>
+                    <td>${account.mythicWeapons || 0}</td>
+                    <td>${account.legendaryWeapons || 0}</td>
+                    <td>${account.price || 0} XAF</td>
                     <td>${account.isAvailable ? '✅' : '❌'}</td>
                     <td>
                         <button class="action-btn btn-edit" onclick="editAccount('${account._id}')">
@@ -1106,12 +1106,12 @@
             const data = Object.fromEntries(formData.entries());
             
             // Convertir les valeurs numériques
-            data.level = parseInt(data.level);
-            data.mythicCharacters = parseInt(data.mythicCharacters);
-            data.legendaryCharacters = parseInt(data.legendaryCharacters);
-            data.mythicWeapons = parseInt(data.mythicWeapons);
-            data.legendaryWeapons = parseInt(data.legendaryWeapons);
-            data.price = parseInt(data.price);
+            data.level = parseInt(data.level) || 0;
+            data.mythicCharacters = parseInt(data.mythicCharacters) || 0;
+            data.legendaryCharacters = parseInt(data.legendaryCharacters) || 0;
+            data.mythicWeapons = parseInt(data.mythicWeapons) || 0;
+            data.legendaryWeapons = parseInt(data.legendaryWeapons) || 0;
+            data.price = parseInt(data.price) || 0;
             
             // Gérer les checkboxes
             data.negotiable = document.querySelector('input[name="negotiable"]').checked;
@@ -1153,6 +1153,21 @@
             } catch (error) {
                 console.error('Erreur suppression:', error);
                 showNotification('Erreur de suppression', 'error');
+            }
+        }
+
+        // CORRECTION IMPORTANTE : URL corrigée pour l'édition des comptes
+        async function editAccount(accountId) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/accounts/${accountId}`);
+                if (!response.ok) throw new Error('Erreur de chargement');
+
+                const account = await response.json();
+                showAccountForm(account);
+
+            } catch (error) {
+                console.error('Erreur édition:', error);
+                showNotification('Erreur de chargement du compte', 'error');
             }
         }
 
@@ -1261,21 +1276,6 @@
         async function viewOrder(orderId) {
             // Implémenter la vue détaillée d'une commande
             alert(`Voir les détails de la commande: ${orderId}`);
-        }
-
-        // Éditer un compte
-        async function editAccount(accountId) {
-            try {
-                const response = await fetch(`${API_BASE_URL}/api/accounts/${accountId}`);
-                if (!response.ok) throw new Error('Erreur de chargement');
-
-                const account = await response.json();
-                showAccountForm(account);
-
-            } catch (error) {
-                console.error('Erreur édition:', error);
-                showNotification('Erreur de chargement du compte', 'error');
-            }
         }
 
         // Charger les données initiales
