@@ -15,10 +15,395 @@
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     
-    <!-- CSS -->
-    <link rel="stylesheet" href="css/style.css">
-
+    <!-- TOUT LE CSS INTÉGRÉ DIRECTEMENT -->
     <style>
+        /* Variables et reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        :root {
+            --neon-green: #00ff88;
+            --neon-purple: #8a2be2;
+            --neon-blue: #00ccff;
+            --neon-red: #ff4444;
+            --neon-orange: #ffaa00;
+            --neon-yellow: #ffd700;
+            --dark-bg: #0a0a0f;
+            --card-bg: #1a1a2e;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent-glow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(0, 255, 136, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(138, 43, 226, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(0, 204, 255, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .cyber-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 136, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 136, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 255, 136, 0.3);
+            padding: 15px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            object-fit: cover;
+            box-shadow: var(--accent-glow);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .logo-text {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--neon-green), var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-link {
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--neon-green);
+        }
+
+        .cyber-btn {
+            background: linear-gradient(135deg, var(--neon-green), var(--neon-blue));
+            color: var(--dark-bg);
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--accent-glow);
+        }
+
+        .cyber-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 255, 136, 0.4);
+        }
+
+        /* Main Content */
+        .main {
+            padding: 120px 20px 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .page-title {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--neon-green), var(--neon-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Products Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--neon-green), var(--neon-purple), var(--neon-blue));
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 255, 136, 0.2);
+        }
+
+        .product-amount {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--neon-green);
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+        }
+
+        .product-discount {
+            background: linear-gradient(135deg, var(--neon-orange), var(--neon-yellow));
+            color: var(--dark-bg);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+        }
+
+        .loading-spinner {
+            border: 3px solid rgba(0, 255, 136, 0.3);
+            border-top: 3px solid var(--neon-green);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(0, 255, 136, 0.3);
+            padding: 30px 0;
+            margin-top: 80px;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .footer-text {
+            color: var(--text-secondary);
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-link {
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            color: var(--neon-green);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 20px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-header {
+            padding: 25px;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--neon-green);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            color: var(--neon-red);
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+            padding: 0 25px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--neon-green);
+            font-weight: 600;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--neon-green);
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+        }
+
+        /* Styles spécifiques pour accueil.html */
         .auth-required-overlay {
             position: absolute;
             top: 0;
@@ -111,7 +496,7 @@
             border: 1px solid rgba(0, 255, 136, 0.3);
             border-radius: 15px;
             padding: 25px;
-            margin: 25px 0;
+            margin: 25px;
             text-align: center;
         }
 
@@ -232,6 +617,41 @@
             color: var(--text-secondary);
             font-size: 0.9rem;
         }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-controls {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .main {
+                padding: 140px 15px 40px;
+            }
+
+            .page-title {
+                font-size: 2.5rem;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .auth-buttons {
+                flex-direction: column;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
@@ -240,36 +660,36 @@
     <!-- Header -->
     <header class="header">
         <div class="header-content">
-            <a href="accueil.html" class="logo">
+            <a href="/" class="logo">
                 <img src="https://files.catbox.moe/0fr884.jpeg" alt="K-SHOP Logo" class="logo-image">
                 <div class="logo-text">K-SHOP</div>
             </a>
 
             <nav class="nav-controls">
-                <a href="accueil.html" class="nav-link">
+                <a href="/" class="nav-link">
                     <i class="fas fa-home"></i>
                     Accueil
                 </a>
-                <a href="comptes.html" class="nav-link">
+                <a href="/comptes" class="nav-link">
                     <i class="fas fa-users"></i>
                     Comptes
                 </a>
-                <a href="faq.html" class="nav-link">
+                <a href="/faq" class="nav-link">
                     <i class="fas fa-question-circle"></i>
                     FAQ
                 </a>
-                <a href="support.html" class="nav-link">
+                <a href="/support" class="nav-link">
                     <i class="fas fa-headset"></i>
                     Support
                 </a>
                 
                 <!-- Liens authentification -->
                 <div id="authLinks" style="display: flex; gap: 10px;">
-                    <a href="signin.html" class="nav-link">
+                    <a href="/signin" class="nav-link">
                         <i class="fas fa-sign-in-alt"></i>
                         Connexion
                     </a>
-                    <a href="signup.html" class="cyber-btn">
+                    <a href="/signup" class="cyber-btn">
                         <i class="fas fa-user-plus"></i>
                         Inscription
                     </a>
@@ -277,11 +697,11 @@
 
                 <!-- Liens utilisateur connecté -->
                 <div id="userLinks" style="display: none; align-items: center; gap: 15px;">
-                    <a href="user.html" class="nav-link">
+                    <a href="/user" class="nav-link">
                         <i class="fas fa-user"></i>
                         Mon Compte
                     </a>
-                    <a href="historique.html" class="nav-link">
+                    <a href="/historique" class="nav-link">
                         <i class="fas fa-history"></i>
                         Historique
                     </a>
@@ -329,7 +749,7 @@
             <p style="color: var(--text-secondary); margin-bottom: 40px;">
                 Découvrez notre sélection de comptes premium avec armes légendaires et personnages mythiques
             </p>
-            <a href="comptes.html" class="cyber-btn" style="font-size: 1.1rem; padding: 15px 30px;">
+            <a href="/comptes" class="cyber-btn" style="font-size: 1.1rem; padding: 15px 30px;">
                 <i class="fas fa-store"></i>
                 Voir tous les comptes
             </a>
@@ -552,11 +972,11 @@
                                 Connectez-vous pour acheter ce produit
                             </div>
                             <div class="auth-buttons">
-                                <a href="signin.html" class="cyber-btn">
+                                <a href="/signin" class="cyber-btn">
                                     <i class="fas fa-sign-in-alt"></i>
                                     Se connecter
                                 </a>
-                                <a href="signup.html" class="cyber-btn" style="background: rgba(0, 204, 255, 0.2); color: var(--neon-blue); border-color: var(--neon-blue);">
+                                <a href="/signup" class="cyber-btn" style="background: rgba(0, 204, 255, 0.2); color: var(--neon-blue); border-color: var(--neon-blue);">
                                     <i class="fas fa-user-plus"></i>
                                     Créer un compte
                                 </a>
@@ -626,7 +1046,7 @@
             if (!currentUser) {
                 notificationSystem.show('Veuillez vous connecter pour acheter', 'error');
                 setTimeout(() => {
-                    window.location.href = 'signin.html';
+                    window.location.href = '/signin';
                 }, 1500);
                 return;
             }
@@ -650,7 +1070,7 @@
             if (!currentUser) {
                 notificationSystem.show('Session expirée. Veuillez vous reconnecter.', 'error');
                 setTimeout(() => {
-                    window.location.href = 'signin.html';
+                    window.location.href = '/signin';
                 }, 1500);
                 return;
             }
