@@ -15,10 +15,161 @@
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     
-    <!-- CSS -->
-    <link rel="stylesheet" href="css/style.css">
-
+    <!-- TOUT LE CSS INTÉGRÉ DIRECTEMENT -->
     <style>
+        /* Variables et reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        :root {
+            --neon-green: #00ff88;
+            --neon-purple: #8a2be2;
+            --neon-blue: #00ccff;
+            --neon-red: #ff4444;
+            --neon-orange: #ffaa00;
+            --neon-yellow: #ffd700;
+            --dark-bg: #0a0a0f;
+            --card-bg: #1a1a2e;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent-glow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(0, 255, 136, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(138, 43, 226, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(0, 204, 255, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .cyber-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 136, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 136, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 255, 136, 0.3);
+            padding: 15px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            object-fit: cover;
+            box-shadow: var(--accent-glow);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .logo-text {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--neon-green), var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-link {
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--neon-green);
+        }
+
+        .cyber-btn {
+            background: linear-gradient(135deg, var(--neon-green), var(--neon-blue));
+            color: var(--dark-bg);
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--accent-glow);
+        }
+
+        .cyber-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 255, 136, 0.4);
+        }
+
+        /* Verification Styles */
         .verification-container {
             display: flex;
             align-items: center;
@@ -48,6 +199,11 @@
             height: 3px;
             background: linear-gradient(90deg, var(--neon-green), var(--neon-purple), var(--neon-blue));
             animation: scanline 3s linear infinite;
+        }
+
+        @keyframes scanline {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
 
         .verification-icon {
@@ -135,7 +291,7 @@
             margin: 10px 0;
         }
 
-        .success-state, .pending-state {
+        .success-state, .pending-state, .auto-verify-state {
             display: none;
         }
 
@@ -148,6 +304,91 @@
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
         }
+
+        .loading-spinner {
+            border: 3px solid rgba(0, 255, 136, 0.3);
+            border-top: 3px solid var(--neon-green);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Notifications */
+        .notification-container {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 10000;
+            max-width: 350px;
+        }
+
+        .notification {
+            background: var(--card-bg);
+            border: 1px solid;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.3s ease;
+        }
+
+        .notification.success {
+            border-color: var(--neon-green);
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        .notification.error {
+            border-color: var(--neon-red);
+            background: rgba(255, 68, 68, 0.1);
+        }
+
+        .notification.info {
+            border-color: var(--neon-blue);
+            background: rgba(0, 204, 255, 0.1);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-controls {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .verification-card {
+                padding: 30px 20px;
+            }
+
+            .verification-title {
+                font-size: 1.8rem;
+            }
+
+            .verification-icon {
+                font-size: 3rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -159,17 +400,19 @@
     <!-- Header -->
     <header class="header">
         <div class="header-content">
-            <a href="accueil.html" class="logo">
+            <!-- CORRECTION : Lien sans .html -->
+            <a href="/" class="logo">
                 <img src="https://files.catbox.moe/0fr884.jpeg" alt="K-SHOP Logo" class="logo-image">
                 <div class="logo-text">K-SHOP</div>
             </a>
 
             <nav class="nav-controls">
-                <a href="accueil.html" class="nav-link">
+                <!-- CORRECTIONS : Liens sans .html -->
+                <a href="/" class="nav-link">
                     <i class="fas fa-home"></i>
                     Accueil
                 </a>
-                <a href="signin.html" class="nav-link">
+                <a href="/signin" class="nav-link">
                     <i class="fas fa-sign-in-alt"></i>
                     Connexion
                 </a>
@@ -234,13 +477,14 @@
                         <i class="fas fa-redo"></i>
                         Renvoyer l'email de vérification
                     </button>
-                    <div class="countdown" id="countdown">
+                    <div class="countdown" id="countdown" style="display: none;">
                         Vous pourrez renvoyer dans <span id="timer">60</span> secondes
                     </div>
                 </div>
 
                 <div style="margin-top: 30px;">
-                    <a href="signin.html" class="nav-link">
+                    <!-- CORRECTION : Lien sans .html -->
+                    <a href="/signin" class="nav-link">
                         <i class="fas fa-arrow-left"></i>
                         Retour à la connexion
                     </a>
@@ -260,14 +504,16 @@
                 </p>
 
                 <div style="margin-top: 40px;">
-                    <a href="signin.html" class="cyber-btn" style="font-size: 1.1rem; padding: 15px 30px;">
+                    <!-- CORRECTION : Lien sans .html -->
+                    <a href="/signin" class="cyber-btn" style="font-size: 1.1rem; padding: 15px 30px;">
                         <i class="fas fa-sign-in-alt"></i>
                         Se connecter
                     </a>
                 </div>
 
                 <div style="margin-top: 20px;">
-                    <a href="accueil.html" class="nav-link">
+                    <!-- CORRECTION : Lien sans .html -->
+                    <a href="/" class="nav-link">
                         <i class="fas fa-home"></i>
                         Retour à l'accueil
                     </a>
@@ -275,7 +521,7 @@
             </div>
 
             <!-- État vérification automatique -->
-            <div class="pending-state" id="autoVerifyState">
+            <div class="auto-verify-state" id="autoVerifyState">
                 <div class="loading-spinner" style="width: 60px; height: 60px; margin: 20px auto;"></div>
                 <h1 class="verification-title">Vérification en cours</h1>
                 <p class="verification-subtitle">
@@ -285,13 +531,63 @@
         </div>
     </main>
 
-    <!-- JavaScript -->
-    <script src="js/main.js"></script>
-    <script src="js/auth.js"></script>
-    
     <script>
+        // Configuration
+        const API_BASE_URL = 'https://kerm-shop.onrender.com/api';
         let resendCooldown = 60;
         let cooldownTimer;
+
+        // Système de notifications
+        class NotificationSystem {
+            show(message, type = 'success', duration = 5000) {
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-${this.getIcon(type)}"></i>
+                        <div>${message}</div>
+                    </div>
+                `;
+                
+                const container = document.getElementById('notificationContainer');
+                container.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.style.animation = 'slideIn 0.3s ease reverse';
+                    setTimeout(() => notification.remove(), 300);
+                }, duration);
+            }
+            
+            getIcon(type) {
+                const icons = {
+                    success: 'check-circle',
+                    error: 'exclamation-circle',
+                    info: 'info-circle'
+                };
+                return icons[type] || 'info-circle';
+            }
+        }
+
+        const notificationSystem = new NotificationSystem();
+
+        // Fonction de vérification d'email
+        async function verifyEmail(token) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/verify-email`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ token })
+                });
+
+                const data = await response.json();
+                return response.ok;
+            } catch (error) {
+                console.error('Erreur vérification:', error);
+                return false;
+            }
+        }
 
         // Afficher l'email depuis l'URL
         function displayEmailFromURL() {
@@ -310,6 +606,8 @@
                     emailDisplay.textContent = savedEmail;
                 } else {
                     emailDisplay.textContent = 'Email non spécifié';
+                notificationSystem.show('Aucun email spécifié pour la vérification', 'error');
+                return;
                 }
             }
 
@@ -317,6 +615,8 @@
             if (token) {
                 showAutoVerifyState();
                 verifyEmailToken(token);
+            } else {
+                showPendingState();
             }
         }
 
@@ -352,6 +652,7 @@
                 if (success) {
                     setTimeout(() => {
                         showSuccessState();
+                        notificationSystem.show('Email vérifié avec succès!', 'success');
                     }, 1500);
                 } else {
                     showPendingState();
@@ -373,19 +674,18 @@
             }
 
             try {
-                // Simuler l'envoi d'email (à remplacer par ton appel API)
                 const response = await fetch(`${API_BASE_URL}/auth/resend-verification`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email })
                 });
 
-                if (!response.ok) {
+                if (response.ok) {
+                    notificationSystem.show('Email de vérification renvoyé avec succès!', 'success');
+                    startCooldown();
+                } else {
                     throw new Error('Erreur lors de l\'envoi');
                 }
-
-                notificationSystem.show('Email de vérification renvoyé avec succès!', 'success');
-                startCooldown();
 
             } catch (error) {
                 notificationSystem.show('Erreur lors de l\'envoi de l\'email', 'error');
@@ -414,15 +714,34 @@
             }, 1000);
         }
 
+        // Vérifier l'authentification
+        function checkAuth() {
+            const token = localStorage.getItem('kshop_token');
+            if (token) {
+                try {
+                    const payload = JSON.parse(atob(token.split('.')[1]));
+                    return {
+                        id: payload.id,
+                        username: payload.username,
+                        email: payload.email
+                    };
+                } catch (error) {
+                    localStorage.removeItem('kshop_token');
+                }
+            }
+            return null;
+        }
+
         // Initialisation
         document.addEventListener('DOMContentLoaded', () => {
             displayEmailFromURL();
             startCooldown();
 
             // Vérifier si l'utilisateur est déjà vérifié/connecté
+            const currentUser = checkAuth();
             if (currentUser) {
                 notificationSystem.show('Vous êtes déjà connecté', 'info');
-                setTimeout(() => window.location.href = 'accueil.html', 1000);
+                setTimeout(() => window.location.href = '/', 1000);
             }
 
             // Événement du bouton renvoyer
