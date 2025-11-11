@@ -1,22 +1,24 @@
 {
   "version": 2,
+  "builds": [
+    {
+      "src": "frontend/*.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "frontend/**/*.css",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "frontend/**/*.js",
+      "use": "@vercel/static"
+    }
+  ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "/frontend/index.html"
     }
   ],
-  "cleanUrls": true,
-  "trailingSlash": false,
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "X-Frame-Options",
-          "value": "DENY"
-        }
-      ]
-    }
-  ]
+  "outputDirectory": "frontend"
 }
