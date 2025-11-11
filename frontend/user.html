@@ -15,10 +15,248 @@
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     
-    <!-- CSS -->
-    <link rel="stylesheet" href="css/style.css">
-
+    <!-- TOUT LE CSS INTÉGRÉ DIRECTEMENT -->
     <style>
+        /* Variables et reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        :root {
+            --neon-green: #00ff88;
+            --neon-purple: #8a2be2;
+            --neon-blue: #00ccff;
+            --neon-red: #ff4444;
+            --neon-orange: #ffaa00;
+            --neon-yellow: #ffd700;
+            --dark-bg: #0a0a0f;
+            --card-bg: #1a1a2e;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent-glow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(0, 255, 136, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(138, 43, 226, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(0, 204, 255, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .cyber-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 136, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 136, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 255, 136, 0.3);
+            padding: 15px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            object-fit: cover;
+            box-shadow: var(--accent-glow);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .logo-text {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--neon-green), var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-link {
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--neon-green);
+        }
+
+        .cyber-btn {
+            background: linear-gradient(135deg, var(--neon-green), var(--neon-blue));
+            color: var(--dark-bg);
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--accent-glow);
+        }
+
+        .cyber-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 255, 136, 0.4);
+        }
+
+        /* Main Content */
+        .main {
+            padding: 120px 20px 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--neon-green), var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(0, 255, 136, 0.3);
+            padding: 30px 0;
+            margin-top: 80px;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .footer-text {
+            color: var(--text-secondary);
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--neon-green);
+            font-weight: 600;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--neon-green);
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+        }
+
+        .form-checkbox {
+            width: 18px;
+            height: 18px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Profile Styles */
         .profile-container {
             max-width: 1000px;
             margin: 0 auto;
@@ -129,6 +367,17 @@
             background: linear-gradient(90deg, var(--neon-red), var(--neon-orange));
         }
 
+        .action-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 2px;
+        }
+
         .danger-btn {
             background: rgba(255, 68, 68, 0.2);
             color: var(--neon-red);
@@ -184,6 +433,11 @@
             animation: fadeIn 0.5s ease;
         }
 
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .player-id-section {
             background: rgba(0, 255, 136, 0.1);
             border: 1px solid rgba(0, 255, 136, 0.3);
@@ -221,6 +475,80 @@
             color: var(--neon-green);
             margin-bottom: 8px;
         }
+
+        /* Notifications */
+        .notification-container {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 10000;
+            max-width: 350px;
+        }
+
+        .notification {
+            background: var(--card-bg);
+            border: 1px solid;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.3s ease;
+        }
+
+        .notification.success {
+            border-color: var(--neon-green);
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        .notification.error {
+            border-color: var(--neon-red);
+            background: rgba(255, 68, 68, 0.1);
+        }
+
+        .notification.info {
+            border-color: var(--neon-blue);
+            background: rgba(0, 204, 255, 0.1);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-controls {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .main {
+                padding: 140px 15px 40px;
+            }
+
+            .page-title {
+                font-size: 2.5rem;
+            }
+
+            .profile-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .tab-navigation {
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
 <body>
@@ -232,27 +560,29 @@
     <!-- Header -->
     <header class="header">
         <div class="header-content">
-            <a href="accueil.html" class="logo">
+            <!-- CORRECTION : Lien sans .html -->
+            <a href="/" class="logo">
                 <img src="https://files.catbox.moe/phtnrr.jpeg" alt="K-SHOP Logo" class="logo-image">
                 <div class="logo-text">K-SHOP</div>
             </a>
 
             <nav class="nav-controls">
-                <a href="accueil.html" class="nav-link">
+                <!-- CORRECTIONS : Liens sans .html -->
+                <a href="/" class="nav-link">
                     <i class="fas fa-home"></i>
                     Accueil
                 </a>
-                <a href="comptes.html" class="nav-link">
+                <a href="/comptes" class="nav-link">
                     <i class="fas fa-users"></i>
                     Comptes
                 </a>
-                <a href="historique.html" class="nav-link">
+                <a href="/historique" class="nav-link">
                     <i class="fas fa-history"></i>
                     Historique
                 </a>
                 
                 <div style="display: flex; align-items: center; gap: 15px;">
-                    <a href="user.html" class="nav-link" style="background: rgba(0, 255, 136, 0.1);">
+                    <a href="/user" class="nav-link" style="background: rgba(0, 255, 136, 0.1);">
                         <i class="fas fa-user"></i>
                         Mon Compte
                     </a>
@@ -361,19 +691,20 @@
                             </div>
 
                             <div class="quick-actions">
-                                <a href="accueil.html" class="quick-action-btn">
+                                <!-- CORRECTIONS : Liens sans .html -->
+                                <a href="/" class="quick-action-btn">
                                     <div class="action-icon">
                                         <i class="fas fa-shopping-cart"></i>
                                     </div>
                                     Acheter des CP
                                 </a>
-                                <a href="historique.html" class="quick-action-btn">
+                                <a href="/historique" class="quick-action-btn">
                                     <div class="action-icon">
                                         <i class="fas fa-history"></i>
                                     </div>
                                     Voir l'historique
                                 </a>
-                                <a href="comptes.html" class="quick-action-btn">
+                                <a href="/comptes" class="quick-action-btn">
                                     <div class="action-icon">
                                         <i class="fas fa-users"></i>
                                     </div>
@@ -524,11 +855,124 @@
         </div>
     </footer>
 
-    <!-- JavaScript -->
-    <script src="js/main.js"></script>
-    <script src="js/auth.js"></script>
-    
     <script>
+        // Configuration
+        const API_BASE_URL = 'https://kerm-shop.onrender.com/api';
+        let currentUser = null;
+
+        // Système de notifications
+        class NotificationSystem {
+            show(message, type = 'success', duration = 5000) {
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-${this.getIcon(type)}"></i>
+                        <div>${message}</div>
+                    </div>
+                `;
+                
+                const container = document.getElementById('notificationContainer');
+                container.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.style.animation = 'slideIn 0.3s ease reverse';
+                    setTimeout(() => notification.remove(), 300);
+                }, duration);
+            }
+            
+            getIcon(type) {
+                const icons = {
+                    success: 'check-circle',
+                    error: 'exclamation-circle',
+                    info: 'info-circle'
+                };
+                return icons[type] || 'info-circle';
+            }
+        }
+
+        const notificationSystem = new NotificationSystem();
+
+        // Fonction de déconnexion
+        function logout() {
+            localStorage.removeItem('kshop_token');
+            notificationSystem.show('Déconnexion réussie', 'success');
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 1500);
+        }
+
+        // Fonction pour récupérer le profil utilisateur
+        async function getUserProfile() {
+            const token = localStorage.getItem('kshop_token');
+            if (!token) return null;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/profile`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    return await response.json();
+                }
+                return null;
+            } catch (error) {
+                console.error('Erreur profil:', error);
+                return null;
+            }
+        }
+
+        // Fonction pour mettre à jour le profil
+        async function updateProfile(profileData) {
+            const token = localStorage.getItem('kshop_token');
+            if (!token) return false;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/profile`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(profileData)
+                });
+
+                if (response.ok) {
+                    notificationSystem.show('Profil mis à jour avec succès', 'success');
+                    return true;
+                } else {
+                    notificationSystem.show('Erreur lors de la mise à jour', 'error');
+                    return false;
+                }
+            } catch (error) {
+                console.error('Erreur mise à jour:', error);
+                notificationSystem.show('Erreur de connexion', 'error');
+                return false;
+            }
+        }
+
+        // Vérifier l'authentification
+        function checkAuth() {
+            const token = localStorage.getItem('kshop_token');
+            if (token) {
+                try {
+                    const payload = JSON.parse(atob(token.split('.')[1]));
+                    currentUser = {
+                        id: payload.id,
+                        username: payload.username,
+                        email: payload.email
+                    };
+                    return currentUser;
+                } catch (error) {
+                    localStorage.removeItem('kshop_token');
+                return null;
+                }
+            }
+            return null;
+        }
+
         // Navigation par onglets
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -545,26 +989,35 @@
 
         // Charger les données du profil
         async function loadUserProfile() {
-            if (!currentUser) {
+            const user = checkAuth();
+            if (!user) {
                 notificationSystem.show('Veuillez vous connecter', 'error');
-                setTimeout(() => window.location.href = 'signin.html', 1000);
+                setTimeout(() => window.location.href = '/signin', 1000);
                 return;
             }
 
             try {
-                const user = await getUserProfile();
-                if (user) {
-                    document.getElementById('username').value = user.username;
-                    document.getElementById('email').value = user.email;
-                    document.getElementById('phone').value = user.phone || '';
-                    document.getElementById('playerId').value = user.playerId || '';
+                const userData = await getUserProfile();
+                if (userData) {
+                    document.getElementById('username').value = userData.username || user.username;
+                    document.getElementById('email').value = userData.email || user.email;
+                    document.getElementById('phone').value = userData.phone || '';
+                    document.getElementById('playerId').value = userData.playerId || '';
 
                     // Mettre à jour les statistiques
+                    updateUserStats(userData);
+                } else {
+                    // Utiliser les données du token si l'API échoue
+                    document.getElementById('username').value = user.username;
+                    document.getElementById('email').value = user.email;
                     updateUserStats(user);
                 }
             } catch (error) {
                 console.error('Erreur chargement profil:', error);
-                notificationSystem.show('Erreur lors du chargement du profil', 'error');
+                // Utiliser les données du token en fallback
+                document.getElementById('username').value = user.username;
+                document.getElementById('email').value = user.email;
+                updateUserStats(user);
             }
         }
 
@@ -614,12 +1067,12 @@
                 return;
             }
 
-            const profileData = {
-                password: newPassword
-                // Note: Tu devras peut-être envoyer le mot de passe actuel pour vérification
+            const passwordData = {
+                currentPassword: currentPassword,
+                newPassword: newPassword
             };
 
-            const success = await updateProfile(profileData);
+            const success = await updateProfile(passwordData);
             if (success) {
                 document.getElementById('passwordForm').reset();
                 notificationSystem.show('Mot de passe changé avec succès', 'success');
@@ -658,8 +1111,9 @@
 
         // Initialisation
         document.addEventListener('DOMContentLoaded', () => {
-            if (!currentUser) {
-                window.location.href = 'signin.html';
+            const user = checkAuth();
+            if (!user) {
+                window.location.href = '/signin';
                 return;
             }
             
