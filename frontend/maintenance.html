@@ -15,10 +15,90 @@
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     
-    <!-- CSS -->
-    <link rel="stylesheet" href="css/style.css">
-
+    <!-- TOUT LE CSS INTÉGRÉ DIRECTEMENT -->
     <style>
+        /* Variables et reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        :root {
+            --neon-green: #00ff88;
+            --neon-purple: #8a2be2;
+            --neon-blue: #00ccff;
+            --neon-red: #ff4444;
+            --neon-orange: #ffaa00;
+            --neon-yellow: #ffd700;
+            --dark-bg: #0a0a0f;
+            --card-bg: #1a1a2e;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent-glow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(0, 255, 136, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(138, 43, 226, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(0, 204, 255, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .cyber-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 136, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 136, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .cyber-btn {
+            background: linear-gradient(135deg, var(--neon-green), var(--neon-blue));
+            color: var(--dark-bg);
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--accent-glow);
+        }
+
+        .cyber-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 255, 136, 0.4);
+        }
+
+        /* Maintenance Styles */
         .maintenance-container {
             display: flex;
             align-items: center;
@@ -48,6 +128,11 @@
             height: 3px;
             background: linear-gradient(90deg, var(--neon-green), var(--neon-purple), var(--neon-blue));
             animation: scanline 3s linear infinite;
+        }
+
+        @keyframes scanline {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
 
         .maintenance-icon {
@@ -200,6 +285,74 @@
             color: var(--text-secondary);
             font-size: 0.9rem;
         }
+
+        /* Notifications */
+        .notification-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            max-width: 350px;
+        }
+
+        .notification {
+            background: var(--card-bg);
+            border: 1px solid;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.3s ease;
+        }
+
+        .notification.success {
+            border-color: var(--neon-green);
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        .notification.error {
+            border-color: var(--neon-red);
+            background: rgba(255, 68, 68, 0.1);
+        }
+
+        .notification.info {
+            border-color: var(--neon-blue);
+            background: rgba(0, 204, 255, 0.1);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .maintenance-card {
+                padding: 40px 20px;
+            }
+
+            .maintenance-title {
+                font-size: 2.2rem;
+            }
+
+            .maintenance-icon {
+                font-size: 4rem;
+            }
+
+            .maintenance-info {
+                grid-template-columns: 1fr;
+            }
+
+            .maintenance-subtitle {
+                font-size: 1.1rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -292,19 +445,50 @@
         </div>
     </main>
 
-    <!-- JavaScript -->
-    <script src="js/main.js"></script>
-    
     <script>
+        // Configuration
+        const API_BASE_URL = 'https://kerm-shop.onrender.com/api';
         let checkInterval;
+
+        // Système de notifications
+        class NotificationSystem {
+            show(message, type = 'success', duration = 5000) {
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-${this.getIcon(type)}"></i>
+                        <div>${message}</div>
+                    </div>
+                `;
+                
+                const container = document.getElementById('notificationContainer');
+                container.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.style.animation = 'slideIn 0.3s ease reverse';
+                    setTimeout(() => notification.remove(), 300);
+                }, duration);
+            }
+            
+            getIcon(type) {
+                const icons = {
+                    success: 'check-circle',
+                    error: 'exclamation-circle',
+                    info: 'info-circle'
+                };
+                return icons[type] || 'info-circle';
+            }
+        }
+
+        const notificationSystem = new NotificationSystem();
 
         // Charger les informations de maintenance
         async function loadMaintenanceInfo() {
             try {
                 const response = await fetch(`${API_BASE_URL}/maintenance/status`);
-                const data = await response.json();
-
                 if (response.ok) {
+                    const data = await response.json();
                     updateMaintenanceDisplay(data);
                 } else {
                     // Mode démo si l'API ne répond pas
@@ -347,7 +531,12 @@
             }
 
             // Statut
-            progressStatusElement.textContent = maintenanceData.isActive ? 'En cours' : 'Terminée';
+            if (maintenanceData.isActive !== undefined) {
+                progressStatusElement.textContent = maintenanceData.isActive ? 'En cours' : 'Terminée';
+                if (!maintenanceData.isActive) {
+                    progressStatusElement.style.color = 'var(--neon-green)';
+                }
+            }
         }
 
         // Mettre à jour la barre de progression
@@ -404,17 +593,22 @@
 
             try {
                 const response = await fetch(`${API_BASE_URL}/maintenance/status`);
-                const data = await response.json();
+                if (response.ok) {
+                    const data = await response.json();
 
-                if (!data.isActive) {
-                    // Maintenance terminée, rediriger vers l'accueil
-                    notificationSystem.show('Maintenance terminée ! Redirection...', 'success');
-                    setTimeout(() => {
-                        window.location.href = 'accueil.html';
-                    }, 2000);
+                    if (!data.isActive) {
+                        // Maintenance terminée, rediriger vers l'accueil
+                        notificationSystem.show('Maintenance terminée ! Redirection...', 'success');
+                        setTimeout(() => {
+                            // CORRECTION : Lien sans .html
+                            window.location.href = '/';
+                        }, 2000);
+                    } else {
+                        notificationSystem.show('La maintenance est toujours en cours', 'info');
+                        loadMaintenanceInfo(); // Recharger les informations
+                    }
                 } else {
-                    notificationSystem.show('La maintenance est toujours en cours', 'info');
-                    loadMaintenanceInfo(); // Recharger les informations
+                    notificationSystem.show('Impossible de vérifier le statut', 'error');
                 }
             } catch (error) {
                 notificationSystem.show('Erreur de vérification', 'error');
@@ -429,16 +623,19 @@
             checkInterval = setInterval(async () => {
                 try {
                     const response = await fetch(`${API_BASE_URL}/maintenance/status`);
-                    const data = await response.json();
-                    
-                    if (!data.isActive) {
-                        clearInterval(checkInterval);
-                        notificationSystem.show('Maintenance terminée !', 'success');
-                        setTimeout(() => {
-                            window.location.href = 'accueil.html';
-                        }, 3000);
-                    } else {
-                        updateMaintenanceDisplay(data);
+                    if (response.ok) {
+                        const data = await response.json();
+                        
+                        if (!data.isActive) {
+                            clearInterval(checkInterval);
+                            notificationSystem.show('Maintenance terminée !', 'success');
+                            setTimeout(() => {
+                                // CORRECTION : Lien sans .html
+                                window.location.href = '/';
+                            }, 3000);
+                        } else {
+                            updateMaintenanceDisplay(data);
+                        }
                     }
                 } catch (error) {
                     console.log('Vérification auto échouée');
@@ -448,17 +645,23 @@
 
         // Compte à rebours dynamique
         function startCountdown() {
-            const endTimeElement = document.getElementById('endTime');
-            const endTimeText = endTimeElement.textContent;
-            
-            if (endTimeText !== '--:--') {
-                setInterval(() => {
-                    updateProgressBar(
-                        document.getElementById('startTime').textContent,
-                        document.getElementById('endTime').textContent
-                    );
-                }, 60000); // Mettre à jour toutes les minutes
-            }
+            setInterval(() => {
+                const startTime = document.getElementById('startTime').textContent;
+                const endTime = document.getElementById('endTime').textContent;
+                
+                if (startTime !== '--:--' && endTime !== '--:--') {
+                    // Recalculer la progression
+                    const start = new Date();
+                    const [startHours, startMinutes] = startTime.split(':');
+                    start.setHours(parseInt(startHours), parseInt(startMinutes), 0, 0);
+
+                    const end = new Date();
+                    const [endHours, endMinutes] = endTime.split(':');
+                    end.setHours(parseInt(endHours), parseInt(endMinutes), 0, 0);
+
+                    updateProgressBar(start, end);
+                }
+            }, 60000); // Mettre à jour toutes les minutes
         }
 
         // Initialisation
